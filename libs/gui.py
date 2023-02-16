@@ -3,13 +3,14 @@ from libs.vector import Vector
 from libs.clock import Clock
 import math
 import random
+from Settings import PATH
 
 
 class Gui:
     def __init__(self, player, frame):
         self.player = player
         self.frame = frame
-        self.gun_img = simplegui.load_image("/home/cached/UNI/CS1822/gameProject/assets/gun.png")
+        self.gun_img = simplegui.load_image(PATH+"/gun.png")
         self.source_size = Vector(998, 747)
         self.source_centre = Vector(self.source_size.x / 2, self.source_size.y / 2)
         self.dest_size = Vector(100, 100)
@@ -18,14 +19,14 @@ class Gui:
         self.guiItems = []
         self.mags = self.player.weapon.current_mag[0]
         self.bullets = self.player.weapon.bullets_left
-        self.bullet_img = simplegui.load_image("/home/cached/UNI/CS1822/gameProject/assets/bullet.png")
+        self.bullet_img = simplegui.load_image(PATH+"/bullet.png")
         self.kills = 0
         self.message = []
         self.count = 0
         self.canvas = None
         self.damaged_effect = False
 
-        self.blood = simplegui.load_image("/home/cached/UNI/CS1822/gameProject/assets/blood.png")
+        self.blood = simplegui.load_image(PATH+"/blood.png")
         self.blood_source_size = Vector(1024, 751)
         self.blood_source_centre = Vector(self.blood_source_size.x / 2, self.blood_source_size.y / 2)
         self.blood_pos = Vector(self.player.pos.x, self.player.pos.y)
