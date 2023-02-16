@@ -2,8 +2,10 @@ from libs.spritesheet import Spritesheet
 from libs.vector import Vector
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from libs.clock import Clock
+from Settings import PATH
 import math
-PATH = "/home/cached/UNI/CS1822/gameProject/assets/sheets/"
+
+
 
 class Enemy:
     def __init__(self, pos, player, gui):
@@ -15,7 +17,7 @@ class Enemy:
         self.player = player
         self.hitbox = (Vector(self.pos.x-50, self.pos.y-50), Vector(self.pos.x+50, self.pos.y+50))
         self.counter = 0
-        self.sheet = "/home/cached/UNI/CS1822/gameProject/assets/sheets/zombie.png"
+        self.sheet = PATH+"/sheets/zombie.png"
         self.sheet_dims = Vector(4097, 222)
         self.sprite = Spritesheet(self.sheet, self.sheet_dims, self.pos, 17, 1, 4, self.rot)
         self.bleeding = False
@@ -23,7 +25,7 @@ class Enemy:
 
 
         self.timer = Clock(0)
-        self.blood = simplegui.load_image("/home/cached/UNI/CS1822/gameProject/assets/blood.png")
+        self.blood = simplegui.load_image(PATH+"/blood.png")
         self.blood_source_size = Vector(1024, 751)
         self.blood_source_centre = Vector(self.blood_source_size.x / 2, self.blood_source_size.y / 2)
         self.blood_pos = Vector(self.pos.x, self.pos.y)

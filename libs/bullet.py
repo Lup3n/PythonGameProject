@@ -2,6 +2,7 @@ from libs.spritesheet import Spritesheet
 from libs.vector import Vector
 import math
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
+from Settings import PATH
 
 def rotate_point(x, y, angle, player_x, player_y):
     # Define the player's position as the origin
@@ -33,7 +34,7 @@ class Bullet:
         self.damage = 25
 
 
-        self.img = simplegui.load_image("/home/cached/UNI/CS1822/gameProject/assets/bullet.png")
+        self.img = simplegui.load_image(PATH+"/bullet.png")
         self.source_centre = Vector(1024/2,768/2)
 
 

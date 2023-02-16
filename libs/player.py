@@ -2,8 +2,8 @@ from libs.spritesheet import Spritesheet
 from libs.vector import Vector
 from libs.bullet import Bullet
 from libs.weapon import Weapon
+from Settings import PATH
 import math
-PATH = "/home/cached/UNI/CS1822/gameProject/assets/sheets/"
 
 class Player:
     def __init__(self, pos=Vector(100,100), gui=None):
@@ -21,7 +21,7 @@ class Player:
 
 
         #Sprite
-        self.sheet = PATH+"idle.png"
+        self.sheet = PATH+"/sheets/idle.png"
         self.sheet_dims = Vector(5060, 216)
         self.sprite = Spritesheet(self.sheet, self.sheet_dims, self.pos, 20, 1, 4, self.rot)
 
@@ -33,10 +33,10 @@ class Player:
 
     def animation(self, state):
         if state == "idle":
-            self.sheet = PATH+"idle.png"
+            self.sheet = PATH+"/sheets/idle.png"
             self.sheet_dims = Vector(5060, 216)
         elif state == "move":
-            self.sheet = PATH+"move.png"
+            self.sheet = PATH+"/sheets/move.png"
             self.sheet_dims = Vector(5160, 220)
 
     def draw(self, canvas):
