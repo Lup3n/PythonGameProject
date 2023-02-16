@@ -11,7 +11,7 @@ class Gui:
         self.player = player
         self.frame = frame
         self.gun_img = simplegui.load_image(PATH+"/gun.png")
-        self.source_size = Vector(998, 747)
+        self.source_size = Vector(self.gun_img.get_width(), self.gun_img.get_height())
         self.source_centre = Vector(self.source_size.x / 2, self.source_size.y / 2)
         self.dest_size = Vector(100, 100)
         self.pos = Vector(frame.x - (self.dest_size.x / 2), frame.y - (self.dest_size.y / 2))
@@ -27,7 +27,7 @@ class Gui:
         self.damaged_effect = False
 
         self.blood = simplegui.load_image(PATH+"/blood.png")
-        self.blood_source_size = Vector(1024, 751)
+        self.blood_source_size = Vector(self.blood.get_width(), self.blood.get_height())
         self.blood_source_centre = Vector(self.blood_source_size.x / 2, self.blood_source_size.y / 2)
         self.blood_pos = Vector(self.player.pos.x, self.player.pos.y)
         self.timer = Clock(0)

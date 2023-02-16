@@ -18,15 +18,14 @@ class Enemy:
         self.hitbox = (Vector(self.pos.x-50, self.pos.y-50), Vector(self.pos.x+50, self.pos.y+50))
         self.counter = 0
         self.sheet = PATH+"/sheets/zombie.png"
-        self.sheet_dims = Vector(4097, 222)
-        self.sprite = Spritesheet(self.sheet, self.sheet_dims, self.pos, 17, 1, 4, self.rot)
+        self.sprite = Spritesheet(self.sheet, self.pos, 17, 1, 4, self.rot)
         self.bleeding = False
         self.alive = True
 
 
         self.timer = Clock(0)
         self.blood = simplegui.load_image(PATH+"/blood.png")
-        self.blood_source_size = Vector(1024, 751)
+        self.blood_source_size = Vector(self.blood.get_width(), self.blood.get_height())
         self.blood_source_centre = Vector(self.blood_source_size.x / 2, self.blood_source_size.y / 2)
         self.blood_pos = Vector(self.pos.x, self.pos.y)
 

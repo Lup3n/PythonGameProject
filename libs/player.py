@@ -22,8 +22,7 @@ class Player:
 
         #Sprite
         self.sheet = PATH+"/sheets/idle.png"
-        self.sheet_dims = Vector(5060, 216)
-        self.sprite = Spritesheet(self.sheet, self.sheet_dims, self.pos, 20, 1, 4, self.rot)
+        self.sprite = Spritesheet(self.sheet, self.pos, 20, 1, 4, self.rot)
 
         self.weapon = Weapon(self, "handgun", 3, 12)
         self.gui = gui
@@ -34,10 +33,8 @@ class Player:
     def animation(self, state):
         if state == "idle":
             self.sheet = PATH+"/sheets/idle.png"
-            self.sheet_dims = Vector(5060, 216)
         elif state == "move":
             self.sheet = PATH+"/sheets/move.png"
-            self.sheet_dims = Vector(5160, 220)
 
     def draw(self, canvas):
         self.sprite.draw(canvas)
