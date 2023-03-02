@@ -1,10 +1,20 @@
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from libs.vector import Vector
+import os
+
+
+def get_path(file: str) -> str:
+    cur_path = os.path.dirname(__file__)
+    s = '..\\assets\\'+file
+    p = os.path.join(cur_path, s)
+    return p
 
 
 class Spritesheet:
     def __init__(self, imgurl: str, pos: Vector, columns: int, rows: int, frame_duration: int, rot: int = 0) -> None:
-        self.img = simplegui.load_image(imgurl)
+        s = get_path(imgurl)
+        print(s)
+        self.img = simplegui.load_image(s)
 
         self.width = self.img.get_width()
         self.height = self.img.get_height()
@@ -45,3 +55,4 @@ class Spritesheet:
             source_centre, source_size,
             (self.dest_centre.x, self.dest_centre.y), dest_size, self.rot
         )
+

@@ -6,6 +6,7 @@ from libs.interaction import Interaction
 from libs.gui import Gui
 from libs.enemy import Enemy
 from libs.animated import Back
+from libs.wall import Wall
 from libs.collisions import Collisions
 import math
 import random
@@ -19,9 +20,8 @@ enemies = []
 
 class Game:
     def __init__(self):
-
         # Basic Prerequisites
-        self.player = Player(Vector(WIDTH/2, HEIGHT/2))
+        self.player = Player(Vector(WIDTH / 2, HEIGHT / 2))
         self.keyboard = Keyboard()
         self.inter = Interaction(player, keyboard, Vector(WIDTH, HEIGHT))
         self.gui = Gui(self.player, Vector(WIDTH, HEIGHT))
@@ -29,7 +29,6 @@ class Game:
 
         # Map Shizz
         self.background = None
-
 
         # Stat Variables
         self.kills = 0
@@ -48,7 +47,8 @@ class Game:
         self.draw(canvas)
 
     def spawn_enemy(self):
-        self.enemies.append(Enemy(random.randint(100, WIDTH-100), random.randint(100, HEIGHT-100)), self.player, self.gui)
+        self.enemies.append(Enemy(random.randint(100, WIDTH - 100), random.randint(100, HEIGHT - 100)), self.player,
+                            self.gui)
 
     def value_update(self):
         self.enemies = len(self.enemies)
@@ -65,6 +65,7 @@ class Game:
         for x in self.enemies:
             x.update()
             x.draw(canvas)
+
 
 def mouse_handler(position):
     global WELCOME
@@ -110,7 +111,14 @@ def draw(canvas):
         welcome_screen(canvas)
     else:
         background(canvas)
+        w.draw(canvas)
+        w2.draw(canvas)
+
         inter.update()
+        # if w.newHit(player) or w2.newHit(player):
+        #     player.vel = Vector(0, -0.2)
+        w.newHit(player)
+        w2.newHit(player)
         player.update()
         player.weapon.current_mag[0] = 200
         player.draw(canvas)
@@ -121,7 +129,8 @@ def draw(canvas):
             x.draw(canvas)
 
         if len(enemies) < 4:
-            enemies.append(Enemy(Vector(random.randint(100, WIDTH-100), random.randint(100, HEIGHT-100)), player, player_gui))
+            # enemies.append(Enemy(Vector(random.randint(100, WIDTH-100), random.randint(100, HEIGHT-100)), player, player_gui))
+            pass
 
         if len(player.entities) > 0:
             for i in player.entities:
@@ -148,18 +157,20 @@ def draw(canvas):
                         player.entities.remove(i)
                         break
 
-
             # canvas.draw_polyline([[player.entities[i].hitbox[0].x, player.entities[i].hitbox[0].y], [player.entities[i].hitbox[1].x, player.entities[i].hitbox[0].y], [player.entities[i].hitbox[1].x, player.entities[i].hitbox[1].y]], 20, 'Blue')
 
+
+w = Wall((200, 200), 5, "red", "b")
+w2 = Wall((400, 300), 5, "red", "b")
 
 keyboard = Keyboard()
 player = Player(Vector(WIDTH / 2, HEIGHT / 2))
 player_gui = Gui(player, Vector(WIDTH, HEIGHT))
 player.gui = player_gui
 inter = Interaction(player, keyboard, Vector(WIDTH, HEIGHT))
-enemies.append(Enemy(Vector(300, 300), player, player_gui))
-enemies.append(Enemy(Vector(900, 200), player, player_gui))
-enemies.append(Enemy(Vector(500, 500), player, player_gui))
+# enemies.append(Enemy(Vector(300, 300), player, player_gui))
+# enemies.append(Enemy(Vector(900, 200), player, player_gui))
+# enemies.append(Enemy(Vector(500, 500), player, player_gui))
 frame = simplegui.create_frame("Game", WIDTH, HEIGHT)
 frame.set_draw_handler(draw)
 frame.set_keydown_handler(keyboard.keyDown)

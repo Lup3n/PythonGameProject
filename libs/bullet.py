@@ -1,4 +1,4 @@
-from libs.spritesheet import Spritesheet
+from libs.spritesheet import Spritesheet, get_path
 from libs.vector import Vector
 import math
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
@@ -33,9 +33,8 @@ class Bullet:
         self.type = "bullet"
         self.damage = 25
 
-
-        self.img = simplegui.load_image(PATH+"/bullet.png")
-        self.source_centre = Vector(1024/2,768/2)
+        self.img = simplegui.load_image(get_path("bullet.png"))
+        self.source_centre = Vector(1024/2, 768/2)
 
 
     def draw(self, canvas):

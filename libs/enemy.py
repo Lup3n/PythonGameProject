@@ -1,4 +1,4 @@
-from libs.spritesheet import Spritesheet
+from libs.spritesheet import Spritesheet, get_path
 from libs.vector import Vector
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from libs.clock import Clock
@@ -17,14 +17,14 @@ class Enemy:
         self.player = player
         self.hitbox = (Vector(self.pos.x-50, self.pos.y-50), Vector(self.pos.x+50, self.pos.y+50))
         self.counter = 0
-        self.sheet = PATH+"/sheets/zombie.png"
+        self.sheet = "sheets\\zombie.png"
         self.sprite = Spritesheet(self.sheet, self.pos, 17, 1, 4, self.rot)
         self.bleeding = False
         self.alive = True
 
 
         self.timer = Clock(0)
-        self.blood = simplegui.load_image(PATH+"/blood.png")
+        self.blood = simplegui.load_image(get_path("blood.png"))
         self.blood_source_size = Vector(self.blood.get_width(), self.blood.get_height())
         self.blood_source_centre = Vector(self.blood_source_size.x / 2, self.blood_source_size.y / 2)
         self.blood_pos = Vector(self.pos.x, self.pos.y)

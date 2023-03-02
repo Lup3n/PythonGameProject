@@ -59,6 +59,8 @@ class Gui:
             y = math.sin(self.player.rot)
             x = math.cos(self.player.rot)
             canvas.draw_text(("Pos: " + str((round(self.player.pos.x, 1), round(self.player.pos.y, 1)))), (self.player.pos.x + 40, self.player.pos.y+ 50), 24, 'White')
+            canvas.draw_text(("Vel: " + str(self.player.vel.get_p())), (self.player.pos.x + 40, self.player.pos.y+ 90), 24, 'White')
+
             source = self.player.weapon.bullet_spawn_pos.copy()
             end = source.copy().add(Vector(x*2000, y*2000)
 )

@@ -36,6 +36,3 @@ class Interaction:
                     elif x["action"] == "reload":
                         self.object.weapon.reload()
                         x["down"] = False
-
-
-
