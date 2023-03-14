@@ -123,7 +123,8 @@ def draw(canvas):
         player_gui.draw(canvas)
         player_gui.update()
         for x in enemies:
-            x.update()
+            x.update(camera)
+
             x.draw(canvas)
 
         if len(enemies) < 4:
@@ -167,9 +168,9 @@ camera = Camera(player)
 player_gui = Gui(player, Vector(WIDTH, HEIGHT))
 player.gui = player_gui
 inter = Interaction(player, keyboard, Vector(WIDTH, HEIGHT))
-# enemies.append(Enemy(Vector(300, 300), player, player_gui))
-# enemies.append(Enemy(Vector(900, 200), player, player_gui))
-# enemies.append(Enemy(Vector(500, 500), player, player_gui))
+enemies.append(Enemy(Vector(300, 300), player, player_gui))
+enemies.append(Enemy(Vector(900, 200), player, player_gui))
+enemies.append(Enemy(Vector(500, 500), player, player_gui))
 frame = simplegui.create_frame("Game", WIDTH, HEIGHT)
 frame.set_draw_handler(draw)
 frame.set_keydown_handler(keyboard.keyDown)

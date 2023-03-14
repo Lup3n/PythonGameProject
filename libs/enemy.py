@@ -2,6 +2,7 @@ from libs.spritesheet import Spritesheet, get_path
 from libs.vector import Vector
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from libs.clock import Clock
+from libs.camera import Camera
 from Settings import PATH
 import math
 
@@ -57,17 +58,19 @@ class Enemy:
         self.bleeding = True
 
 
-    def update(self):
+    def update(self, camera: Camera):
+        # self.hitbox = (Vector(self.pos.x - 50, self.pos.y - 50), Vector(self.pos.x + 50, self.pos.y + 50))
         if self.alive:
             self.lookat()
             self.follow()
 
         self.timer.tick()
-        self.hitbox = (Vector(self.pos.x - 50, self.pos.y - 50), Vector(self.pos.x + 50, self.pos.y + 50))
+
+        self.hitbox = (Vector(self.pos.x - 50, self.pos.y - 50),
+                       Vector(self.pos.x + 50, self.pos.y + 50))
         if self.health <= 0:
             self.alive = False
             self.player.kills += 1
-        self.hitbox = (Vector(self.pos.x - 50, self.pos.y - 50), Vector(self.pos.x + 50, self.pos.y + 50))
         if self.counter % 30 == 0:
             if self.hitbox[0].x <= self.player.hitbox[0].x <= self.hitbox[1].x and \
                 self.hitbox[0].y <= self.player.hitbox[0].y <= self.hitbox[1].y or \

@@ -6,3 +6,7 @@ class Camera:
     def __init__(self, target: Player) -> None:
         self.x = target.pos.x
         self.y = target.pos.y
+
+    def center_camera(self, vel):
+        self.x += vel.x
+        self.y += vel.y

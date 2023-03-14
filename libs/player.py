@@ -45,14 +45,19 @@ class Player:
     def update(self, camera):
         self.count += 1
 
-        self.vel.multiply(0.85)
-        self.pos.add(self.vel)
+
 
         # self.pos.subtract(Vector(camera.x, camera.y))
         # self.vel = Vector(round(self.vel.x, 1), round(self.vel.y, 1))
         self.sprite.dest_centre = self.pos
-        camera.x = 1280 - self.pos.x
-        camera.y = 720 + self.pos.y
+
+        #camera.x = self.pos.x
+        #camera.y = self.pos.y
+        self.pos = Vector(1280//2, 720//2)
+        self.vel.multiply(0.85)
+        self.pos.add(self.vel)
+        camera.center_camera(self.vel)
+
         self.sprite.rot = round(self.rot, 3)
         self.weapon.bullet_spawn_pos = self.weapon.rotate_point(self.pos.x + 50, self.pos.y + 25, self.rot, self.pos.x,
                                                                 self.pos.y)
