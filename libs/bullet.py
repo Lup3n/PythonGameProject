@@ -4,6 +4,7 @@ import math
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from Settings import PATH
 
+
 def rotate_point(x, y, angle, player_x, player_y):
     # Define the player's position as the origin
     x_origin, y_origin = player_x, player_y
@@ -29,23 +30,21 @@ class Bullet:
         self.pos = gun_pos
         self.vel = Vector()
         self.speed_multi = 20
-        self.hitbox = (Vector(self.pos.x-1, self.pos.y-1), Vector(self.pos.x+1, self.pos.y+1))
+        self.hitbox = (Vector(self.pos.x - 1, self.pos.y - 1), Vector(self.pos.x + 1, self.pos.y + 1))
         self.type = "bullet"
         self.damage = 25
 
         self.img = simplegui.load_image(get_path("bullet.png"))
-        self.source_centre = Vector(1024/2, 768/2)
-
+        self.source_centre = Vector(1024 / 2, 768 / 2)
 
     def draw(self, canvas):
 
         y = math.sin(self.rot)
         x = math.cos(self.rot)
-        self.vel = Vector(x*self.speed_multi, y*self.speed_multi)
+        self.vel = Vector(x * self.speed_multi, y * self.speed_multi)
         self.pos.add(self.vel)
-        canvas.draw_image(self.img, (self.source_centre.x , self.source_centre.y), (1024, 768),
-            (self.pos.x, self.pos.y), (20,20), self.rot
-        )
+        canvas.draw_image(self.img, (self.source_centre.x, self.source_centre.y), (1024, 768),
+                          (self.pos.x, self.pos.y), (20, 20), self.rot)
 
     def hit(self, enemies):
         for j in enemies:
@@ -56,8 +55,16 @@ class Bullet:
                 j.health -= self.damage
                 j.bleed()
 
+    def __delete__(self, instance):
+        del self
 
+#TODO:still working on collision with wall
+    def wall_collision(self, walls):
+        for wall in walls:
+            if wall.check_collision(self):
+                print("HIt wall lol")
+                del self
 
     def update(self):
-        self.hitbox = (Vector(self.pos.x-7.5, self.pos.y-7.5), Vector(self.pos.x+7.5, self.pos.y+7.5))
+        self.hitbox = (Vector(self.pos.x - 7.5, self.pos.y - 7.5), Vector(self.pos.x + 7.5, self.pos.y + 7.5))
         self.pos.add(self.vel)

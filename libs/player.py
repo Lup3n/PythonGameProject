@@ -18,8 +18,8 @@ class Player:
         self.count = 0
         self.kills = 0
         self.radius = 40  # test
-        self.hitbox = (Vector(self.pos.x - 20, self.pos.y - 20), Vector(self.pos.x + 20,
-                                                                        self.pos.y + 20))  # We add 20 so that the players hitbox is smaller so that it feel easier to play
+        self.hitbox = (Vector(self.pos.x - 20, self.pos.y - 20),
+                       Vector(self.pos.x + 20, self.pos.y + 20))  # We add 20 so that the players hitbox is smaller so that it feel easier to play
 
         # Sprite
         self.sheet = "sheets\\idle.png"
@@ -47,16 +47,12 @@ class Player:
 
 
 
-        # self.pos.subtract(Vector(camera.x, camera.y))
-        # self.vel = Vector(round(self.vel.x, 1), round(self.vel.y, 1))
         self.sprite.dest_centre = self.pos
 
-        #camera.x = self.pos.x
-        #camera.y = self.pos.y
         self.pos = Vector(1280//2, 720//2)
         self.vel.multiply(0.85)
         self.pos.add(self.vel)
-        camera.center_camera(self.vel)
+        camera.center_camera(self, self.vel)
 
         self.sprite.rot = round(self.rot, 3)
         self.weapon.bullet_spawn_pos = self.weapon.rotate_point(self.pos.x + 50, self.pos.y + 25, self.rot, self.pos.x,

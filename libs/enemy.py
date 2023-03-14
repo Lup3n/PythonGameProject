@@ -65,9 +65,10 @@ class Enemy:
             self.follow()
 
         self.timer.tick()
+        self.pos.add(-self.player.vel)
+        self.hitbox = (Vector(self.pos.x - 20, self.pos.y - 20),
+                       Vector(self.pos.x + 20, self.pos.y + 20))
 
-        self.hitbox = (Vector(self.pos.x - 50, self.pos.y - 50),
-                       Vector(self.pos.x + 50, self.pos.y + 50))
         if self.health <= 0:
             self.alive = False
             self.player.kills += 1

@@ -2,15 +2,15 @@ import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from libs.vector import Vector
 from libs.clock import Clock
 import math
-import random
-from Settings import PATH
+
+from libs.spritesheet import get_path
 
 
 class Gui:
     def __init__(self, player, frame):
         self.player = player
         self.frame = frame
-        self.gun_img = simplegui.load_image(PATH+"/gun.png")
+        self.gun_img = simplegui.load_image(get_path("gun.png"))
         self.source_size = Vector(self.gun_img.get_width(), self.gun_img.get_height())
         self.source_centre = Vector(self.source_size.x / 2, self.source_size.y / 2)
         self.dest_size = Vector(100, 100)
@@ -19,14 +19,14 @@ class Gui:
         self.guiItems = []
         self.mags = self.player.weapon.current_mag[0]
         self.bullets = self.player.weapon.bullets_left
-        self.bullet_img = simplegui.load_image(PATH+"/bullet.png")
+        self.bullet_img = simplegui.load_image(get_path("bullet.png"))
         self.kills = 0
         self.message = []
         self.count = 0
         self.canvas = None
         self.damaged_effect = False
 
-        self.blood = simplegui.load_image(PATH+"/blood.png")
+        self.blood = simplegui.load_image(get_path("blood.png"))
         self.blood_source_size = Vector(self.blood.get_width(), self.blood.get_height())
         self.blood_source_centre = Vector(self.blood_source_size.x / 2, self.blood_source_size.y / 2)
         self.blood_pos = Vector(self.player.pos.x, self.player.pos.y)
@@ -58,8 +58,8 @@ class Gui:
         if self.debug:
             y = math.sin(self.player.rot)
             x = math.cos(self.player.rot)
-            canvas.draw_text(("Pos: " + str((round(self.player.pos.x, 1), round(self.player.pos.y, 1)))), (self.player.pos.x + 40, self.player.pos.y+ 50), 24, 'White')
-            canvas.draw_text(("Vel: " + str(self.player.vel.get_p())), (self.player.pos.x + 40, self.player.pos.y+ 90), 24, 'White')
+            # canvas.draw_text(("Pos: " + str((round(self.player.pos.x, 1), round(self.player.pos.y, 1)))), (self.player.pos.x + 40, self.player.pos.y+ 50), 24, 'White')
+            # canvas.draw_text(("Vel: " + str(self.player.vel.get_p())), (self.player.pos.x + 40, self.player.pos.y+ 90), 24, 'White')
 
             source = self.player.weapon.bullet_spawn_pos.copy()
             end = source.copy().add(Vector(x*2000, y*2000)

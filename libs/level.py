@@ -1,36 +1,59 @@
 from libs.wall import Wall
+from libs.enemy import Enemy
+from libs.vector import Vector
 
 _ = False
 example_map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, _, _, _, _, 1, _, _, _, 1, _, _, _, _, _, 1],
-    [1, _, _, _, 1, 1, _, _, _, _, _, _, _, _, _, 1],
+    [1, _, _, _, _, 1, _, _, _, 1, _, _, _, _, 2, 1],
+    [1, _, _, _, 1, 69, _, _, _, _, _, _, _, _, _, 1],
     [1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
-    [1, _, _, _, _, _, _, _, _, 1, _, _, _, _, _, 1],
+    [1, _, _, _, 2, _, _, _, _, 1, _, _, _, _, _, 1],
     [1, _, _, _, _, _, _, _, 1, 1, 1, _, _, _, _, 1],
     [1, _, 1, _, _, _, _, _, _, _, _, _, _, 1, _, 1],
-    [1, _, 1, _, _, _, _, _, _, _, _, _, _, 1, _, 1],
+    [1, 2, 1, _, _, _, _, _, _, _, _, _, _, 1, 2, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+]
+
+corridor_level = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, _, _, _, _, 1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1, _, _, _, _, _, 1],
+    [1, 3, _, _, _, _, _, _, _, 1, _, _, _, _, _, 2, _, _, _, _, _, _, _, 1, _, _, 2, _, _, 1],
+    [1, _, _, _, _, 1, _, _, _, _, _, _, _, _, _, _, _, _, 2, _, _, _, _, _, _, 2, 2, _, _, 1],
+    [1, _, _, _, _, 1, _, _, _, _, _, _, _, _, _, _, 1, _, _, _, _, _, _, _, _, _, _, _, _, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 69, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
 
 class Level:
-    def __init__(self) -> None:
+    def __init__(self, player) -> None:
         self.map = example_map
         self.world_map = {}
         self.list_walls: list[Wall, ...] = []
-        self.get_map()
+        self.temp_enemies = []
+        self.get_map(player)
 
-    def get_map(self):
+    def get_map(self, player):
+
         for j, row in enumerate(self.map):
             for i, value in enumerate(row):
-                if value:
+                if value == 1:
                     self.world_map[(i, j)] = value
-                    w = Wall((i*100, j*100), 4, "pink")
+                    w = Wall((i * 95, j * 95), 4, "pink")
                     self.list_walls.append(w)
+                elif value == 69:
+                    self.world_map[(i, j)] = value
+                    w = Wall((i * 95, j * 95), 4, "pink", 1)
+                    self.list_walls.append(w)
+                elif value == 2:
+                    #TODO: needs to be fixed
+                    self.temp_enemies.append(Enemy(Vector((i * 95)-50, (j * 95)-50), player, "Hello"))
+                elif value == 3:
+                    player.pos = Vector((i+1)*100, j*100)
+
         print(self.world_map)
 
-    def draw(self, canvas, player,camera, enemies):
+    def draw(self, canvas, player, camera, enemies: list[Enemy]):
         # random data for reference
         width = 50
         height = 50
@@ -62,9 +85,11 @@ class Level:
                                  (pos[0] * 100 - width, pos[1] * 100 + height)),  # D
                                 line_width, "Pink", "Red")
         """
+        if self.temp_enemies != 0:
+            enemies.extend(self.temp_enemies)
+            self.temp_enemies = []
         for wall in self.list_walls:
             wall.draw(canvas, camera)
-            wall.newHit(player)
+            wall.check_collision(player)
             for enemy in enemies:
-                wall.newHit(enemy)
-
+                wall.check_collision(enemy)

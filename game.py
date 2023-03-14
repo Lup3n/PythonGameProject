@@ -113,7 +113,7 @@ def draw(canvas):
         welcome_screen(canvas)
     else:
         background(canvas, camera)
-        level.draw(canvas, player, camera, enemies)
+
 
         inter.update()
 
@@ -122,6 +122,7 @@ def draw(canvas):
         player.draw(canvas)
         player_gui.draw(canvas)
         player_gui.update()
+        level.draw(canvas, player, camera, enemies)
         for x in enemies:
             x.update(camera)
 
@@ -162,15 +163,15 @@ def draw(canvas):
 
 
 player = Player(Vector(200, 200))
-level = Level()
+level = Level(player)
 keyboard = Keyboard()
 camera = Camera(player)
 player_gui = Gui(player, Vector(WIDTH, HEIGHT))
 player.gui = player_gui
 inter = Interaction(player, keyboard, Vector(WIDTH, HEIGHT))
-enemies.append(Enemy(Vector(300, 300), player, player_gui))
-enemies.append(Enemy(Vector(900, 200), player, player_gui))
-enemies.append(Enemy(Vector(500, 500), player, player_gui))
+#enemies.append(Enemy(Vector(300, 300), player, player_gui))
+#enemies.append(Enemy(Vector(900, 200), player, player_gui))
+#enemies.append(Enemy(Vector(500, 500), player, player_gui))
 frame = simplegui.create_frame("Game", WIDTH, HEIGHT)
 frame.set_draw_handler(draw)
 frame.set_keydown_handler(keyboard.keyDown)
