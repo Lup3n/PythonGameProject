@@ -7,9 +7,11 @@ from libs.gui import Gui
 from libs.enemy import Enemy
 from libs.animated import Back
 from libs.wall import Wall
+from libs.level import Level
 from libs.collisions import Collisions
 import math
 import random
+from libs.camera import Camera
 
 WIDTH = 1280
 HEIGHT = 720
@@ -98,28 +100,24 @@ def welcome_screen(canvas):
 test = Back(Vector(WIDTH, HEIGHT))
 
 
-def background(canvas):
+def background(canvas,camera):
     for i in range(WIDTH // (WIDTH // 30)):
         for j in range(HEIGHT // (HEIGHT // 30)):
             canvas.draw_polyline(
-                [(i * (WIDTH / 30), j * (HEIGHT / 30)), (i * (WIDTH / 30) + WIDTH / 30, j * (HEIGHT / 30)),
-                 (i * (WIDTH / 30) + WIDTH / 30, j * (HEIGHT / 30) + HEIGHT / 30)], 1, 'gray')
+                [(i * (WIDTH / 30)-camera.x, j * (HEIGHT / 30)-camera.y), (i * (WIDTH / 30)-camera.x + WIDTH / 30, j * (HEIGHT / 30)-camera.y),
+                 (i * (WIDTH / 30)-camera.x + WIDTH / 30, j * (HEIGHT / 30)-camera.y + HEIGHT / 30)], 1, 'gray')
 
 
 def draw(canvas):
     if WELCOME:
         welcome_screen(canvas)
     else:
-        background(canvas)
-        w.draw(canvas)
-        w2.draw(canvas)
+        background(canvas, camera)
+        level.draw(canvas, player, camera, enemies)
 
         inter.update()
-        # if w.newHit(player) or w2.newHit(player):
-        #     player.vel = Vector(0, -0.2)
-        w.newHit(player)
-        w2.newHit(player)
-        player.update()
+
+        player.update(camera)
         player.weapon.current_mag[0] = 200
         player.draw(canvas)
         player_gui.draw(canvas)
@@ -129,6 +127,7 @@ def draw(canvas):
             x.draw(canvas)
 
         if len(enemies) < 4:
+            #currently no enemies added
             # enemies.append(Enemy(Vector(random.randint(100, WIDTH-100), random.randint(100, HEIGHT-100)), player, player_gui))
             pass
 
@@ -160,11 +159,11 @@ def draw(canvas):
             # canvas.draw_polyline([[player.entities[i].hitbox[0].x, player.entities[i].hitbox[0].y], [player.entities[i].hitbox[1].x, player.entities[i].hitbox[0].y], [player.entities[i].hitbox[1].x, player.entities[i].hitbox[1].y]], 20, 'Blue')
 
 
-w = Wall((200, 200), 5, "red", "b")
-w2 = Wall((400, 300), 5, "red", "b")
 
+player = Player(Vector(200, 200))
+level = Level()
 keyboard = Keyboard()
-player = Player(Vector(WIDTH / 2, HEIGHT / 2))
+camera = Camera(player)
 player_gui = Gui(player, Vector(WIDTH, HEIGHT))
 player.gui = player_gui
 inter = Interaction(player, keyboard, Vector(WIDTH, HEIGHT))

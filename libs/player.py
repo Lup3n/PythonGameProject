@@ -28,11 +28,6 @@ class Player:
         self.weapon = Weapon(self, "handgun", 3, 12)
         self.gui = gui
 
-    def offset_l(self):
-        return self.pos.x - self.radius
-
-    def offset_t(self):
-        return self.pos.y + self.radius
 
     def animation(self, state):
         if state == "idle":
@@ -47,12 +42,17 @@ class Player:
         # canvas.draw_polyline([(self.hitbox[1].x, self.hitbox[1].y), (self.hitbox[0].x, self.hitbox[1].y)], 12, 'Red')
         # canvas.draw_polyline([(self.hitbox[0].x, self.hitbox[1].y), (self.hitbox[0].x, self.hitbox[0].y)], 12, 'Green')
 
-    def update(self):
+    def update(self, camera):
         self.count += 1
+
         self.vel.multiply(0.85)
         self.pos.add(self.vel)
+
+        # self.pos.subtract(Vector(camera.x, camera.y))
         # self.vel = Vector(round(self.vel.x, 1), round(self.vel.y, 1))
         self.sprite.dest_centre = self.pos
+        camera.x = 1280 - self.pos.x
+        camera.y = 720 + self.pos.y
         self.sprite.rot = round(self.rot, 3)
         self.weapon.bullet_spawn_pos = self.weapon.rotate_point(self.pos.x + 50, self.pos.y + 25, self.rot, self.pos.x,
                                                                 self.pos.y)

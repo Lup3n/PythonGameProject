@@ -2,36 +2,22 @@ from libs.vector import Vector
 
 
 class Wall:
-    def __init__(self, pos: tuple[int, int], border: int, color: str, direction_wall: str) -> None:
+    def __init__(self, pos: tuple[int, int], border: int, color: str) -> None:
         self.border = border
         self.color = color
         self.pos = Vector(pos[0], pos[1])
-        length = 50
+        self.length = 50
+        self.safe_offset = 10
         self.hitbox = (
-        Vector(self.pos.x - length, self.pos.y - length), Vector(self.pos.x + length, self.pos.y + length))
-        """
-        if direction_wall == "b":
-            self.dir_wall = "b"
-            self.edge_r = self.start_p[1] - self.border
-            self.normal = Vector(0, -1)
-        elif direction_wall =="l":
-            self.dir_wall = "l"
-            self.edge_r = self.start_p[0] + self.border
-            self.normal = Vector(-1, 0)
-        elif direction_wall == "t":
-            self.dir_wall = "t"
-            self.edge_r = self.start_p[1] + self.border
-            self.normal = Vector(0, 1)
-        elif direction_wall == "b":
-            self.dir_wall = "b"
-            self.edge_r = self.start_p[1] - self.border
-            self.normal = Vector(0, -1)
-        else:
-            raise ValueError("argument [direction_wall] must be 'r' or 'l'!")
-        """
+            Vector(self.pos.x - self.length-self.safe_offset, self.pos.y - self.length-self.safe_offset),
+            Vector(self.pos.x + self.length, self.pos.y + self.length+self.safe_offset))
 
-    def draw(self, canvas):
-        # canvas.draw_line(self.start_p,self.end_pos,self.border * 2 + 1,self.color)
+        self.margin = 5
+
+    def draw(self, canvas, camera):
+        self.hitbox = (
+            Vector(self.pos.x - self.length-self.safe_offset - camera.x, self.pos.y-self.safe_offset - self.length - camera.y),
+            Vector(self.pos.x + self.length +self.safe_offset - camera.x, self.pos.y + self.length +self.safe_offset - camera.y))
         canvas.draw_polyline([(self.hitbox[0].x, self.hitbox[0].y), (self.hitbox[1].x, self.hitbox[0].y)], 12, 'Blue')
         canvas.draw_polyline([(self.hitbox[1].x, self.hitbox[0].y), (self.hitbox[1].x, self.hitbox[1].y)], 12, 'Purple')
         canvas.draw_polyline([(self.hitbox[1].x, self.hitbox[1].y), (self.hitbox[0].x, self.hitbox[1].y)], 12, 'Red')
@@ -59,24 +45,30 @@ class Wall:
         """
         pass
 
-    def newHit(self, player) -> bool:
-        if self.check1(player) and self.check2(player):
-            player.vel = Vector(0, -0.2)
+    def newHit(self, player) -> None:
+        push_power = 1
+        if self.check1(player) and self.check2(player) and self.check3(player):
+            player.vel = Vector(0, push_power)  # WORKS
 
-        elif self.check3(player) and self.check4(player):
-            player.vel = Vector(-.2, 0)
-            return True
-        return False
+        elif self.check3(player) and self.check4(player) and self.check1(player):
+            player.vel = Vector(0, -push_power)  # WORKS
+
+        elif self.check2(player) and self.check3(player) and self.check4(player):
+            player.vel = Vector(-push_power, 0)  # WORKS
+
+        elif self.check4(player) and self.check1(player) and self.check2(player):
+            player.vel = Vector(push_power, 0)  # WORKS
 
     def check1(self, player):
-        if self.hitbox[0].x <= player.hitbox[0].x <= self.hitbox[1].x:
+
+        if self.hitbox[0].x - self.margin <= player.hitbox[0].x <= self.hitbox[1].x + self.margin:
             return True
 
     def check2(self, player):
-        return self.hitbox[0].y <= player.hitbox[0].y <= self.hitbox[1].y
+        return self.hitbox[0].y - self.margin <= player.hitbox[0].y <= self.hitbox[1].y + self.margin
 
     def check3(self, player):
-        return self.hitbox[0].x <= player.hitbox[1].x <= self.hitbox[1].x
+        return self.hitbox[0].x - self.margin <= player.hitbox[1].x <= self.hitbox[1].x + self.margin
 
     def check4(self, player):
-        return self.hitbox[0].y <= player.hitbox[1].y <= self.hitbox[1].y
+        return self.hitbox[0].y - self.margin <= player.hitbox[1].y <= self.hitbox[1].y + self.margin

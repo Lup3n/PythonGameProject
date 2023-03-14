@@ -15,7 +15,9 @@ class Enemy:
         self.vel = Vector()
         self.gui = gui
         self.player = player
-        self.hitbox = (Vector(self.pos.x-50, self.pos.y-50), Vector(self.pos.x+50, self.pos.y+50))
+        self.hitbox = (
+            Vector(self.pos.x-50, self.pos.y-50),
+            Vector(self.pos.x+50, self.pos.y+50))
         self.counter = 0
         self.sheet = "sheets\\zombie.png"
         self.sprite = Spritesheet(self.sheet, self.pos, 17, 1, 4, self.rot)
@@ -82,3 +84,5 @@ class Enemy:
             if self.bleeding:
                 self.bleeding = False
         self.counter += 1
+
+    # TODO: add collision to wall as player
