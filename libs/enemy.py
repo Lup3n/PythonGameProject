@@ -87,7 +87,7 @@ class Enemy:
         self.sprite.dest_centre = self.pos
         self.vel.multiply(0.50)
         self.sprite.rot = round(self.rot, 3)
-        self.temp_animation.rot = round(self.rot, 3)
+        #self.temp_animation.rot = round(self.rot, 3)
         if self.timer.transition(200):
             if self.bleeding:
                 self.bleeding = False
