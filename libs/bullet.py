@@ -4,6 +4,9 @@ import math
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 from Settings import PATH
 
+WIDTH: int = 1280
+HEIGHT: int = 720
+
 
 def rotate_point(x, y, angle, player_x, player_y):
     # Define the player's position as the origin
@@ -55,16 +58,14 @@ class Bullet:
                 j.health -= self.damage
                 j.bleed()
 
-    def __delete__(self, instance):
-        del self
+    # TODO:still working on collision with wall
+    def wall_collision(self, wall) -> bool:
+        # print("it hit a wall omg no way ")
+        return wall.check_collision(self)
 
-#TODO:still working on collision with wall
-    def wall_collision(self, walls):
-        for wall in walls:
-            if wall.check_collision(self):
-                print("HIt wall lol")
-                del self
+    def off_screen(self) -> bool:
+        return self.pos.x > WIDTH + 10 or self.pos.x < -10 or self.pos.y > HEIGHT + 10 or self.pos.y < -10
 
-    def update(self):
+    def update(self) -> None:
         self.hitbox = (Vector(self.pos.x - 7.5, self.pos.y - 7.5), Vector(self.pos.x + 7.5, self.pos.y + 7.5))
         self.pos.add(self.vel)

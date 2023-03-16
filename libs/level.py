@@ -24,10 +24,22 @@ corridor_level = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 69, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
+test_map = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, _, _, _, _, 1, _, _, _, 1, _, _, _, _, _, 1],
+    [1, _, _, _, 1,69, _, _, _, _, _, _, _, _, _, 1],
+    [1, _, _, _, _, _, _, _, _, _, _, 2, _, _, _, 1],
+    [1, _, _, _, _, _, _, _, _, 1, _, _, _, _, _, 1],
+    [1, _, _, _, _, _, _, _, 1, 1, 1, _, _, _, _, 1],
+    [1, _, 1, _, _, _, _, _, _, _, _, _, _, 1, _, 1],
+    [1, _, 1, _, _, _, _, _, _, _, _, _, _, 1, _, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+]
+
 
 class Level:
     def __init__(self, player) -> None:
-        self.map = example_map
+        self.map = test_map
         self.world_map = {}
         self.list_walls: list[Wall, ...] = []
         self.temp_enemies = []
@@ -48,8 +60,8 @@ class Level:
                 elif value == 2:
                     #TODO: needs to be fixed
                     self.temp_enemies.append(Enemy(Vector((i * 95)-50, (j * 95)-50), player, "Hello"))
-                elif value == 3:
-                    player.pos = Vector((i+1)*100, j*100)
+                elif value == 3: # not functioning
+                    player.pos = Vector((i)*100, j*100)
 
         print(self.world_map)
 

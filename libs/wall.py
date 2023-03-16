@@ -36,28 +36,6 @@ class Wall:
     # canvas.draw_polyline([(self.hitbox[1].x, self.hitbox[1].y), (self.hitbox[0].x, self.hitbox[1].y)], 12, 'Red')
     # canvas.draw_polyline([(self.hitbox[0].x, self.hitbox[1].y), (self.hitbox[0].x, self.hitbox[0].y)], 12, 'Green')
 
-    def hit(self, other) -> bool:
-        """
-        TODO: wall3 check extends 4ever
-        Issue: it is not limited to the wall
-        :param other: an object instance
-        :return: boolean whether it's hitting the wall
-
-        h = False
-        match self.dir_wall:
-            case "r":
-                h = (other.offset_l() >= self.edge_r)  # edited
-            case "l":
-                h = (other.offset_l() - other.radius * 2 <= self.edge_r)
-            case "t":
-                h = (other.offset_t() - other.radius * 2 <= self.edge_r)
-            case "b":
-                h = (other.offset_t() >= self.edge_r) and (self.start_p[0]<other.pos.x<self.end_pos[0])
-
-        return h
-        """
-        pass
-
     def check_collision(self, player) -> None:
         push_power = 1
         if self.check1(player) and self.check2(player) and self.check3(player):

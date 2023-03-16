@@ -8,6 +8,7 @@ from libs.enemy import Enemy
 from libs.animated import Back
 from libs.wall import Wall
 from libs.level import Level
+from libs.spritesheet import get_path
 from libs.collisions import Collisions
 import math
 import random
@@ -100,7 +101,7 @@ def welcome_screen(canvas):
 test = Back(Vector(WIDTH, HEIGHT))
 
 
-def background(canvas,camera):
+def background(canvas, camera):
     for i in range(WIDTH // (WIDTH // 30)):
         for j in range(HEIGHT // (HEIGHT // 30)):
             canvas.draw_polyline(
@@ -114,52 +115,48 @@ def draw(canvas):
     else:
         background(canvas, camera)
 
-
         inter.update()
 
         player.update(camera)
-        player.weapon.current_mag[0] = 200
+        player.weapon.current_mag[0] = 200  # infinite ammo
         player.draw(canvas)
+        player.draw_health_bar(canvas) #temp
         player_gui.draw(canvas)
         player_gui.update()
         level.draw(canvas, player, camera, enemies)
         for x in enemies:
             x.update(camera)
-
             x.draw(canvas)
 
         if len(enemies) < 4:
-            #currently no enemies added
+            # currently no enemies added
             # enemies.append(Enemy(Vector(random.randint(100, WIDTH-100), random.randint(100, HEIGHT-100)), player, player_gui))
             pass
 
         if len(player.entities) > 0:
-            for i in player.entities:
-                if player.entities:
-
-                    if i.pos.x > WIDTH + 10 or i.pos.x < -10 or i.pos.y > HEIGHT + 10 or i.pos.y < -10:
-                        player.entities.remove(i)
-                        break
-
-                i.draw(canvas)
-                i.update()
+            for bullet in player.entities:
+                bullet.draw(canvas)
+                bullet.update()
+                if bullet.off_screen():
+                    player.entities.remove(bullet)
+                    del bullet
+                    break
 
                 for j in enemies:
-                    if j.hitbox[0].x <= i.hitbox[0].x <= j.hitbox[1].x and \
-                            j.hitbox[0].y <= i.hitbox[0].y <= j.hitbox[1].y or \
-                            j.hitbox[0].x <= i.hitbox[1].x <= j.hitbox[1].x and \
-                            j.hitbox[0].y <= i.hitbox[1].y <= j.hitbox[1].y:
+                    if j.got_shot(bullet):
                         j.health -= 50
                         j.bleed()
                         if j.health <= 0:
                             enemies.remove(j)
                             player.kills += 1
                             break
-                        player.entities.remove(i)
+                        player.entities.remove(bullet)
                         break
 
-            # canvas.draw_polyline([[player.entities[i].hitbox[0].x, player.entities[i].hitbox[0].y], [player.entities[i].hitbox[1].x, player.entities[i].hitbox[0].y], [player.entities[i].hitbox[1].x, player.entities[i].hitbox[1].y]], 20, 'Blue')
+                # i.draw(canvas)
+                # i.update()
 
+            # canvas.draw_polyline([[player.entities[i].hitbox[0].x, player.entities[i].hitbox[0].y], [player.entities[i].hitbox[1].x, player.entities[i].hitbox[0].y], [player.entities[i].hitbox[1].x, player.entities[i].hitbox[1].y]], 20, 'Blue')
 
 
 player = Player(Vector(200, 200))
@@ -169,9 +166,9 @@ camera = Camera(player)
 player_gui = Gui(player, Vector(WIDTH, HEIGHT))
 player.gui = player_gui
 inter = Interaction(player, keyboard, Vector(WIDTH, HEIGHT))
-#enemies.append(Enemy(Vector(300, 300), player, player_gui))
-#enemies.append(Enemy(Vector(900, 200), player, player_gui))
-#enemies.append(Enemy(Vector(500, 500), player, player_gui))
+enemies.append(Enemy(Vector(300, 300), player, player_gui))
+enemies.append(Enemy(Vector(900, 200), player, player_gui))
+enemies.append(Enemy(Vector(500, 500), player, player_gui))
 frame = simplegui.create_frame("Game", WIDTH, HEIGHT)
 frame.set_draw_handler(draw)
 frame.set_keydown_handler(keyboard.keyDown)

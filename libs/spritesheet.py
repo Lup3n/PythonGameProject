@@ -11,9 +11,9 @@ def get_path(file: str) -> str:
 
 
 class Spritesheet:
-    def __init__(self, imgurl: str, pos: Vector, columns: int, rows: int, frame_duration: int, rot: int = 0) -> None:
+    def __init__(self, imgurl: str, pos: Vector, columns: int, rows: int, frame_duration: int, rot: int = 0, size:
+    tuple[int, int] = (100, 100)) -> None:
         s = get_path(imgurl)
-        print(s)
         self.img = simplegui.load_image(s)
 
         self.width = self.img.get_width()
@@ -31,6 +31,7 @@ class Spritesheet:
         self.frame_duration = frame_duration
         self.frame_clock = 0
         self.frame_reverse = False
+        self.size = size
 
     def update_index(self):
         self.frame_index[0] = (self.frame_index[0] + 1) % self.columns
@@ -53,6 +54,6 @@ class Spritesheet:
         canvas.draw_image(
             self.img,
             source_centre, source_size,
-            (self.dest_centre.x, self.dest_centre.y), dest_size, self.rot
+            (self.dest_centre.x, self.dest_centre.y), self.size, self.rot
         )
 
