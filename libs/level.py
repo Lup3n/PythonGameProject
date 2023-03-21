@@ -63,7 +63,7 @@ class Level:
                 elif value == 3: # not functioning
                     player.pos = Vector((i)*100, j*100)
 
-        print(self.world_map)
+        # print(self.world_map)
 
     def draw(self, canvas, player, camera, enemies: list[Enemy]):
         # random data for reference

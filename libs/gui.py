@@ -32,7 +32,7 @@ class Gui:
         self.timer = Clock(0)
         self.effects = []
 
-        self.debug = True
+        self.debug = False
 
     def draw(self, canvas):
         # Gun Stuff

@@ -55,7 +55,7 @@ class Player:
 
         self.sprite.dest_centre = self.pos
 
-        # self.pos = Vector(1280 // 2, 720 // 2)
+        self.pos = Vector(1280 // 2, 720 // 2)
         self.vel.multiply(0.85)
         # self.pos.add(self.vel)
         camera.center_camera(self, self.vel)

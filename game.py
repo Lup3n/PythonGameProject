@@ -35,7 +35,7 @@ class Game:
 
         # Stat Variables
         self.kills = 0
-        self.enemies = len(enemies)
+        self.enemies_count = len(enemies)
 
     def start(self):
         self.player.lives = 3
@@ -54,7 +54,7 @@ class Game:
                             self.gui)
 
     def value_update(self):
-        self.enemies = len(self.enemies)
+        self.enemies_count = len(self.enemies)
 
     def update(self):
         self.background()
@@ -78,9 +78,31 @@ def mouse_handler(position):
         print("meow")
 
 
+test = Back(Vector(WIDTH, HEIGHT))
+intro = simplegui.load_image(get_path("newSprites\\IntroductionPage.png"))
+
+pos = Vector(-640, HEIGHT // 2)
+
+
+def update_ground(canvas):
+    global pos
+
+    if pos.x + intro.get_width() / 2 < WIDTH:
+        inc = Vector(16, 0)
+        pos = pos.add(inc)
+
+    canvas.draw_image(intro,
+                      (intro.get_width() / 2, 360),
+                      (intro.get_width(), intro.get_height()),
+                      pos.get_p(),
+                      (1280, 720))
+
+
 def welcome_screen(canvas):
-    test.draw(canvas)
-    test.update()
+    # test.draw(canvas)
+    # test.update()
+    update_ground(canvas)
+    """
     canvas.draw_text('Welcome To ZoomBie',
                      ((WIDTH / 2) - (frame.get_canvas_textwidth('Welcome To ZoomBie', 50) // 2), 40),
                      50, 'White', 'sans-serif')
@@ -96,17 +118,38 @@ def welcome_screen(canvas):
     canvas.draw_text('Click To Begin',
                      ((WIDTH - (frame.get_canvas_textwidth('Click To Begin', 50)) * 2), HEIGHT // 2),
                      50, 'White', 'sans-serif')
+    """
+
+    pass
 
 
-test = Back(Vector(WIDTH, HEIGHT))
+pavement = simplegui.load_image(get_path("newSprites\\pavement.png"))
+new_pavement = simplegui.load_image(get_path("newSprites\\Pavement_tiles.png"))
 
 
 def background(canvas, camera):
-    for i in range(WIDTH // (WIDTH // 30)):
-        for j in range(HEIGHT // (HEIGHT // 30)):
-            canvas.draw_polyline(
-                [(i * (WIDTH / 30)-camera.x, j * (HEIGHT / 30)-camera.y), (i * (WIDTH / 30)-camera.x + WIDTH / 30, j * (HEIGHT / 30)-camera.y),
-                 (i * (WIDTH / 30)-camera.x + WIDTH / 30, j * (HEIGHT / 30)-camera.y + HEIGHT / 30)], 1, 'gray')
+    ws = len(level.map[0])
+    hs = len(level.map)
+
+    x = (ws-1) * 95
+    y = (hs-1) * 95
+    # for i in range(WIDTH // (WIDTH // 30)):
+    #    for j in range(HEIGHT // (HEIGHT // 30)):
+    # canvas.draw_image(pavement,
+    #                  (pavement.get_width() / 2, pavement.get_height() / 2),
+    #                  (512,512),
+    #                  (i, j),
+    #                  (30, 30))
+    # canvas.draw_polyline(
+    #    [(i * (WIDTH / 30) - camera.x, j * (HEIGHT / 30) - camera.y),
+    #     (i * (WIDTH / 30) - camera.x + WIDTH / 30, j * (HEIGHT / 30) - camera.y),
+    #     (i * (WIDTH / 30) - camera.x + WIDTH / 30, j * (HEIGHT / 30) - camera.y + HEIGHT / 30)], 1, 'gray')
+
+    canvas.draw_image(new_pavement,
+                      (new_pavement.get_width() / 2, new_pavement.get_height() / 2),
+                      (new_pavement.get_width(), new_pavement.get_height()),
+                      (x/2 - camera.x, y/2 - camera.y),
+                      (ws*95, hs*95))
 
 
 def draw(canvas):
@@ -120,7 +163,7 @@ def draw(canvas):
         player.update(camera)
         player.weapon.current_mag[0] = 200  # infinite ammo
         player.draw(canvas)
-        player.draw_health_bar(canvas) #temp
+        player.draw_health_bar(canvas)
         player_gui.draw(canvas)
         player_gui.update()
         level.draw(canvas, player, camera, enemies)

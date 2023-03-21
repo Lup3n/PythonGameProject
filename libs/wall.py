@@ -39,7 +39,7 @@ class Wall:
     def check_collision(self, player) -> None:
         push_power = 1
         if self.check1(player) and self.check2(player) and self.check3(player):
-            player.vel.add(Vector(0, push_power))  # WORKS
+            player.vel.add(Vector(0, push_power))
 
         elif self.check3(player) and self.check4(player) and self.check1(player):
             player.vel.add(Vector(0, -push_power))
@@ -48,10 +48,9 @@ class Wall:
             player.vel.add(Vector(-push_power, 0))
 
         elif self.check4(player) and self.check1(player) and self.check2(player):
-            player.vel.add(Vector(push_power, 0))  # WORKS
+            player.vel.add(Vector(push_power, 0))
 
     def check1(self, player):
-
         if self.hitbox[0].x - self.margin <= player.hitbox[0].x <= self.hitbox[1].x + self.margin:
             return True
 

@@ -21,6 +21,7 @@ class Enemy:
         self.counter = 0
         self.sheet = "sheets\\zombie.png"
         self.sprite = Spritesheet(self.sheet, self.pos, 17, 1, 4, self.rot)
+        self.temp_animation = Spritesheet("newSprites\\sequence2.png", self.pos, 12, 1, 10, self.rot, (50, 50)) # new seques
         self.bleeding = False
         self.alive = True
 
@@ -37,6 +38,7 @@ class Enemy:
                               (self.blood_source_size.x, self.blood_source_size.y),
                               self.pos.get_p(),  # (self.blood_pos.x, self.blood_pos.y),
                               (100, 100))
+        # self.temp_animation.draw(canvas)
         self.sprite.draw(canvas)
         #canvas.draw_image(self.temp_sprite, (self.temp_sprite.get_width()/2, self.temp_sprite.get_height()/2),
         #                  (self.temp_sprite.get_width(), self.temp_sprite.get_height()),
