@@ -7,6 +7,7 @@ from libs.gui import Gui
 from libs.enemy import Enemy
 from libs.animated import Back
 from libs.wall import Wall
+from libs.statusbar import StatusBar
 from libs.level import Level
 from libs.spritesheet import get_path
 from libs.collisions import Collisions
@@ -27,6 +28,7 @@ class Game:
         self.player = Player(Vector(WIDTH / 2, HEIGHT / 2))
         self.keyboard = Keyboard()
         self.inter = Interaction(player, keyboard, Vector(WIDTH, HEIGHT))
+        self.status_bar = StatusBar(self.player, Vector(WIDTH, HEIGHT)) 
         self.gui = Gui(self.player, Vector(WIDTH, HEIGHT))
         self.enemies = []
 
@@ -68,6 +70,7 @@ class Game:
         for x in self.enemies:
             x.update()
             x.draw(canvas)
+        self.status_bar.draw(canvas)
 
 
 def mouse_handler(position):
@@ -161,15 +164,15 @@ def draw(canvas):
         inter.update()
 
         player.update(camera)
-        player.weapon.current_mag[0] = 200  # infinite ammo
+        #player.weapon.current_mag[0] = 200  # infinite ammo
         player.draw(canvas)
-        player.draw_health_bar(canvas)
         player_gui.draw(canvas)
         player_gui.update()
         level.draw(canvas, player, camera, enemies)
         for x in enemies:
             x.update(camera)
             x.draw(canvas)
+        statusbar.draw(canvas)
 
         if len(enemies) < 4:
             # currently no enemies added
@@ -192,6 +195,7 @@ def draw(canvas):
                         if j.health <= 0:
                             enemies.remove(j)
                             player.kills += 1
+                            print(player.kills)
                             break
                         player.entities.remove(bullet)
                         break
@@ -206,6 +210,7 @@ player = Player(Vector(200, 200))
 level = Level(player)
 keyboard = Keyboard()
 camera = Camera(player)
+statusbar = StatusBar(player, Vector(WIDTH, HEIGHT), enemies)
 player_gui = Gui(player, Vector(WIDTH, HEIGHT))
 player.gui = player_gui
 inter = Interaction(player, keyboard, Vector(WIDTH, HEIGHT))

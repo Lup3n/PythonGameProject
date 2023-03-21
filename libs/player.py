@@ -41,7 +41,7 @@ class Player:
 
     def draw(self, canvas):
         self.sprite.draw(canvas)
-        self.draw_health_bar(canvas)
+        #self.draw_health_bar(canvas)
         # [bullet.draw(canvas) for bullet in self.entities]
         # canvas.draw_polyline([(self.hitbox[0].x, self.hitbox[0].y), (self.hitbox[1].x, self.hitbox[0].y)], 12, 'Blue')
         # canvas.draw_polyline([(self.hitbox[1].x, self.hitbox[0].y), (self.hitbox[1].x, self.hitbox[1].y)], 12, 'Purple')
@@ -67,17 +67,3 @@ class Player:
                                                                         self.pos.y + 20))  # We add 20 so that the players hitbox is smaller so that it feel easier to play
 
     # Define helper function to draw the health bar
-    def draw_health_bar(self, canvas):
-        W = 720
-
-        health_bar_width = (W / 2) * (self.health / 100.0)
-
-        canvas.draw_text("Health:", [10, 30], 18, "white")
-        canvas.draw_polygon([(10, 10), (10, 40), (W / 2 + 10, 40), (W / 2 + 10, 10)], 2, "white",
-                            "blue")
-
-        if self.health >= 0:
-            heath_perc = self.health / 100.0
-            health_colour = (int(255 * (1 - heath_perc)), int(255 * heath_perc), 0)
-            canvas.draw_polygon([(10, 10), (10, 40), (health_bar_width + 10, 40), (health_bar_width + 10, 10)], 2, "white",
-                            "rgb" + str(tuple(health_colour)))
