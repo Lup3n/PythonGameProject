@@ -25,31 +25,33 @@ enemies = []
 class Game:
     def __init__(self):
         # Basic Prerequisites
-        self.player = Player(Vector(WIDTH / 2, HEIGHT / 2))
+        self.running = False # Can be used in the future to pause the game if needed
+        self.welcome_screen = True # Determine whether the introduction should be shown
+        self.player = Player(Vector(200, 200))
         self.keyboard = Keyboard()
-        self.inter = Interaction(player, keyboard, Vector(WIDTH, HEIGHT))
-        self.status_bar = StatusBar(self.player, Vector(WIDTH, HEIGHT)) 
-        self.gui = Gui(self.player, Vector(WIDTH, HEIGHT))
+        self.camera = Camera(self.player)
         self.enemies = []
+        self.level = Level(self.player)
 
-        # Map Shizz
-        self.background = None
-
-        # Stat Variables
-        self.kills = 0
-        self.enemies_count = len(enemies)
+        self.statusbar = StatusBar(self.player, Vector(WIDTH, HEIGHT), self.enemies)
+        self.inter = Interaction(self.player, self.keyboard, Vector(WIDTH, HEIGHT))
+        self.status_bar = StatusBar(self.player, Vector(WIDTH, HEIGHT), self.enemies) 
+        self.player_gui = Gui(self.player, Vector(WIDTH, HEIGHT))
+        self.player.gui = self.player_gui
 
     def start(self):
         self.player.lives = 3
         self.player.health = 100
         self.pos = Vector(100, 100)
 
-    def background(self):
-        print("Background")
+
 
     def run(self, canvas):
-        self.update()
-        self.draw(canvas)
+        if self.running and not self.welcome_screen:
+            self.update()
+            self.draw(canvas)
+        else:
+            self.introduction(canvas)
 
     def spawn_enemy(self):
         self.enemies.append(Enemy(random.randint(100, WIDTH - 100), random.randint(100, HEIGHT - 100)), self.player,
@@ -57,169 +59,78 @@ class Game:
 
     def value_update(self):
         self.enemies_count = len(self.enemies)
+ 
 
     def update(self):
-        self.background()
         self.inter.update()
-        self.player.update()
-        self.gui.update()
+        self.player.update(self.camera)
 
     def draw(self, canvas):
+        self.draw_background(canvas)
         self.player.draw(canvas)
-        self.gui.draw(canvas)
+        self.level.draw(canvas, self.player, self.camera, self.enemies)
         for x in self.enemies:
-            x.update()
+            x.update(self.camera)
             x.draw(canvas)
         self.status_bar.draw(canvas)
 
+        if len(self.player.entities) > 0:
+            for bullet in self.player.entities:
+                bullet.draw(canvas)
+                bullet.update()
+                if bullet.off_screen():
+                    self.player.entities.remove(bullet)
+                    del bullet
+                    break
 
-def mouse_handler(position):
-    global WELCOME
-    if WELCOME:
-        WELCOME = False
-    else:
-        print("meow")
+                for j in self.enemies:
+                    if j.got_shot(bullet):
+                        j.health -= 50
+                        j.bleed()
+                        if j.health <= 0:
+                            self.enemies.remove(j)
+                            self.player.kills += 1
+                            break
+                        self.player.entities.remove(bullet)
+                        break
+    
+    def draw_background(self, canvas):
+        new_pavement = simplegui.load_image(get_path("newSprites\\Pavement_tiles.png"))
+        ws = len(self.level.map[0])
+        hs = len(self.level.map)
 
+        x = (ws-1) * 95
+        y = (hs-1) * 95
 
-test = Back(Vector(WIDTH, HEIGHT))
-intro = simplegui.load_image(get_path("newSprites\\IntroductionPage.png"))
+        canvas.draw_image(new_pavement,
+                        (new_pavement.get_width() / 2, new_pavement.get_height() / 2),
+                        (new_pavement.get_width(), new_pavement.get_height()),
+                        (x/2 - self.camera.x, y/2 - self.camera.y),
+                        (ws*95, hs*95))
 
-pos = Vector(-640, HEIGHT // 2)
-
-
-def update_ground(canvas):
-    global pos
-
-    if pos.x + intro.get_width() / 2 < WIDTH:
-        inc = Vector(16, 0)
-        pos = pos.add(inc)
-
-    canvas.draw_image(intro,
+    def introduction(self, canvas):
+        intro = simplegui.load_image(get_path("newSprites\\IntroductionPage.png"))
+        pos = Vector(640, HEIGHT // 2)
+        if pos.x + intro.get_width() / 2 < WIDTH:
+            inc = Vector(16, 0)
+            pos = pos.add(inc)
+        canvas.draw_image(intro,
                       (intro.get_width() / 2, 360),
                       (intro.get_width(), intro.get_height()),
                       pos.get_p(),
                       (1280, 720))
 
-
-def welcome_screen(canvas):
-    # test.draw(canvas)
-    # test.update()
-    update_ground(canvas)
-    """
-    canvas.draw_text('Welcome To ZoomBie',
-                     ((WIDTH / 2) - (frame.get_canvas_textwidth('Welcome To ZoomBie', 50) // 2), 40),
-                     50, 'White', 'sans-serif')
-
-    text = ["The objective of the game is to try to survive all the waves and kill the zombies", "The Controls are:",
-            "W - Up", "S - Down", "A - Left", " D - Right", "Right Arrow = Rotate Clockwise",
-            " Left Arrow = Rotate AntiClockwise"]
-    for i in range(len(text)):
-        canvas.draw_text(text[i],
-                         ((WIDTH // 40), 80 * (i + 1)),
-                         25, 'White', 'sans-serif')
-
-    canvas.draw_text('Click To Begin',
-                     ((WIDTH - (frame.get_canvas_textwidth('Click To Begin', 50)) * 2), HEIGHT // 2),
-                     50, 'White', 'sans-serif')
-    """
-
-    pass
+    def mouse_handler(self, position):
+        if self.welcome_screen:
+            self.welcome_screen = False
+            self.running = True
 
 
-pavement = simplegui.load_image(get_path("newSprites\\pavement.png"))
-new_pavement = simplegui.load_image(get_path("newSprites\\Pavement_tiles.png"))
 
-
-def background(canvas, camera):
-    ws = len(level.map[0])
-    hs = len(level.map)
-
-    x = (ws-1) * 95
-    y = (hs-1) * 95
-    # for i in range(WIDTH // (WIDTH // 30)):
-    #    for j in range(HEIGHT // (HEIGHT // 30)):
-    # canvas.draw_image(pavement,
-    #                  (pavement.get_width() / 2, pavement.get_height() / 2),
-    #                  (512,512),
-    #                  (i, j),
-    #                  (30, 30))
-    # canvas.draw_polyline(
-    #    [(i * (WIDTH / 30) - camera.x, j * (HEIGHT / 30) - camera.y),
-    #     (i * (WIDTH / 30) - camera.x + WIDTH / 30, j * (HEIGHT / 30) - camera.y),
-    #     (i * (WIDTH / 30) - camera.x + WIDTH / 30, j * (HEIGHT / 30) - camera.y + HEIGHT / 30)], 1, 'gray')
-
-    canvas.draw_image(new_pavement,
-                      (new_pavement.get_width() / 2, new_pavement.get_height() / 2),
-                      (new_pavement.get_width(), new_pavement.get_height()),
-                      (x/2 - camera.x, y/2 - camera.y),
-                      (ws*95, hs*95))
-
-
-def draw(canvas):
-    if WELCOME:
-        welcome_screen(canvas)
-    else:
-        background(canvas, camera)
-
-        inter.update()
-
-        player.update(camera)
-        #player.weapon.current_mag[0] = 200  # infinite ammo
-        player.draw(canvas)
-        player_gui.draw(canvas)
-        player_gui.update()
-        level.draw(canvas, player, camera, enemies)
-        for x in enemies:
-            x.update(camera)
-            x.draw(canvas)
-        statusbar.draw(canvas)
-
-        if len(enemies) < 4:
-            # currently no enemies added
-            # enemies.append(Enemy(Vector(random.randint(100, WIDTH-100), random.randint(100, HEIGHT-100)), player, player_gui))
-            pass
-
-        if len(player.entities) > 0:
-            for bullet in player.entities:
-                bullet.draw(canvas)
-                bullet.update()
-                if bullet.off_screen():
-                    player.entities.remove(bullet)
-                    del bullet
-                    break
-
-                for j in enemies:
-                    if j.got_shot(bullet):
-                        j.health -= 50
-                        j.bleed()
-                        if j.health <= 0:
-                            enemies.remove(j)
-                            player.kills += 1
-                            print(player.kills)
-                            break
-                        player.entities.remove(bullet)
-                        break
-
-                # i.draw(canvas)
-                # i.update()
-
-            # canvas.draw_polyline([[player.entities[i].hitbox[0].x, player.entities[i].hitbox[0].y], [player.entities[i].hitbox[1].x, player.entities[i].hitbox[0].y], [player.entities[i].hitbox[1].x, player.entities[i].hitbox[1].y]], 20, 'Blue')
-
-
-player = Player(Vector(200, 200))
-level = Level(player)
-keyboard = Keyboard()
-camera = Camera(player)
-statusbar = StatusBar(player, Vector(WIDTH, HEIGHT), enemies)
-player_gui = Gui(player, Vector(WIDTH, HEIGHT))
-player.gui = player_gui
-inter = Interaction(player, keyboard, Vector(WIDTH, HEIGHT))
-enemies.append(Enemy(Vector(300, 300), player, player_gui))
-enemies.append(Enemy(Vector(900, 200), player, player_gui))
-enemies.append(Enemy(Vector(500, 500), player, player_gui))
+main = Game()
 frame = simplegui.create_frame("Game", WIDTH, HEIGHT)
-frame.set_draw_handler(draw)
-frame.set_keydown_handler(keyboard.keyDown)
-frame.set_keyup_handler(keyboard.keyUp)
-frame.set_mouseclick_handler(mouse_handler)
+frame.set_draw_handler(main.run)
+frame.set_keydown_handler(main.keyboard.keyDown)
+frame.set_keyup_handler(main.keyboard.keyUp)
+frame.set_mouseclick_handler(main.mouse_handler)
 frame.start()
