@@ -39,6 +39,8 @@ class Game:
         self.player_gui = Gui(self.player, Vector(WIDTH, HEIGHT))
         self.player.gui = self.player_gui
 
+        self.intro_pos = Vector(-640, HEIGHT // 2)
+
     def start(self):
         self.player.lives = 3
         self.player.health = 100
@@ -110,14 +112,13 @@ class Game:
 
     def introduction(self, canvas):
         intro = simplegui.load_image(get_path("newSprites\\IntroductionPage.png"))
-        pos = Vector(640, HEIGHT // 2)
-        if pos.x + intro.get_width() / 2 < WIDTH:
+        if self.intro_pos.x + intro.get_width() / 2 < WIDTH:
             inc = Vector(16, 0)
-            pos = pos.add(inc)
+            self.intro_pos.add(inc)
         canvas.draw_image(intro,
                       (intro.get_width() / 2, 360),
                       (intro.get_width(), intro.get_height()),
-                      pos.get_p(),
+                      self.intro_pos.get_p(),
                       (1280, 720))
 
     def mouse_handler(self, position):
