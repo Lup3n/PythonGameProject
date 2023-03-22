@@ -26,13 +26,13 @@ corridor_level = [
 
 test_map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, _, _, _, _, 1, _, _, _, 1, _, _, _, _, _, 1],
+    [1, _, _, _, 2, 1, _, _, _, 1, _, _, _, _, _, 1],
     [1, _, _, _, 1,69, _, _, _, _, _, _, _, _, _, 1],
     [1, _, _, _, _, _, _, _, _, _, _, 2, _, _, _, 1],
     [1, _, _, _, _, _, _, _, _, 1, _, _, _, _, _, 1],
     [1, _, _, _, _, _, _, _, 1, 1, 1, _, _, _, _, 1],
     [1, _, 1, _, _, _, _, _, _, _, _, _, _, 1, _, 1],
-    [1, _, 1, _, _, _, _, _, _, _, _, _, _, 1, _, 1],
+    [1, 2, 1, _, _, _, _, 3, _, _, _, _, _, 1, _, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
@@ -58,10 +58,9 @@ class Level:
                     w = Wall((i * 95, j * 95), 4, "pink", 1)
                     self.list_walls.append(w)
                 elif value == 2:
-                    #TODO: needs to be fixed
-                    self.temp_enemies.append(Enemy(Vector((i * 95)-50, (j * 95)-50), player, "Hello"))
+                    self.temp_enemies.append(Enemy(Vector((i * 95)-player.pos.x, ((j * 95)-player.pos.y)), player, "Hello"))
                 elif value == 3: # not functioning
-                    player.pos = Vector((i)*100, j*100)
+                    player.pos = Vector(((i)*95)-player.pos.x, (j*95)-player.pos.y)
 
         # print(self.world_map)
 

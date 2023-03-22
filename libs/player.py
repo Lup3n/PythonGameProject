@@ -6,7 +6,7 @@ import math
 
 
 class Player:
-    def __init__(self, pos=Vector(100, 100), gui=None):
+    def __init__(self, pos=Vector(0,0), gui=None):
         # Core Mechanics
         self.pos = pos
         self.vel = Vector()
@@ -54,8 +54,7 @@ class Player:
         # print("NUMBER OF BULLETS IN ENTITIES[] IS: " + str(len(self.entities)))
 
         self.sprite.dest_centre = self.pos
-
-        self.pos = Vector(1280 // 2, 720 // 2)
+        self.pos = Vector(1280 // 2, (720 // 2) - 150) # -150 is so that the player is centered on the yaxis with the status bar 
         self.vel.multiply(0.85)
         # self.pos.add(self.vel)
         camera.center_camera(self, self.vel)
