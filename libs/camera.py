@@ -8,7 +8,7 @@ class Camera:
         self.y = target.pos.y
         self.pos = Vector()
 
-    def center_camera(self, player, vel):
+    def center_camera(self, vel):
         self.x += vel.x
         self.y += vel.y
 

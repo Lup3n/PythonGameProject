@@ -1,14 +1,22 @@
 from libs.spritesheet import Spritesheet, get_path
 from libs.vector import Vector
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
+import math
+
 from libs.clock import Clock
 from libs.camera import Camera
-from Settings import PATH
-import math
+from libs.player import Player
+
 
 
 class Enemy:
-    def __init__(self, pos, player, gui):
+    def __init__(self, pos, player: Player, gui):
+        """
+
+        :param pos:
+        :param player:
+        :param gui:
+        """
         self.pos = pos
         self.health = 100
         self.rot = 0
@@ -32,6 +40,12 @@ class Enemy:
         self.blood_pos = Vector(self.pos.x, self.pos.y)
 
     def draw(self, canvas):
+        """
+        Function that draws the enemy instance and the animation.
+        It may draw the blood on the instance if ``self.bleeding`` is true.
+        :param canvas:
+        :return:
+        """
         if self.bleeding:
             canvas.draw_image(self.blood,
                               (self.blood_source_centre.x, self.blood_source_centre.y),
@@ -52,18 +66,31 @@ class Enemy:
         # canvas.draw_polyline([(self.hitbox[0].x, self.hitbox[1].y), (self.hitbox[0].x, self.hitbox[0].y)], 12, 'Green')
 
     def lookat(self):
+        """
+        Set the enemy rotation to point at the player.
+        """
         self.rot = math.atan2(self.pos.y - self.player.pos.y,
                               self.pos.x - self.player.pos.x) - math.pi  # Some reason their backs look at you so i just do a 180
 
     def follow(self):
+        """
+        Method that add to the zombie the direction of the player, so the zombie follows the player.
+        """
         self.vel.add((Vector(self.player.pos.x - self.pos.x, self.player.pos.y - self.pos.y)).normalize())
 
     def bleed(self):
+        """
+        Method to start a countdown and display blood on the enemy.
+        """
         self.timer.time = 0
         self.bleeding = True
 
 
     def update(self, camera: Camera):
+        """
+
+        :param camera: Camera instance to add the offset to the enemy
+        """
         # self.hitbox = (Vector(self.pos.x - 50, self.pos.y - 50), Vector(self.pos.x + 50, self.pos.y + 50))
         if self.alive:
             self.lookat()

@@ -1,14 +1,18 @@
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
-from libs.spritesheet import Spritesheet, get_path
+from libs.spritesheet import get_path
 from libs.vector import Vector
-from libs.enemy import Enemy
-import math
-import random
+from libs.player import Player
 
 
 class StatusBar:
 
-    def __init__(self, player, frame, enemies):
+    def __init__(self, player: Player, frame, enemies) -> None:
+        """
+        Constructor for the StatusBar class
+        :param player: Player instance to access health and ammunition of the player
+        :param frame: A Vector Instance of the screen size.
+        :param enemies: list of enemies currently on screen
+        """
         self.player = player
         self.frame = frame
         self.enemies = enemies

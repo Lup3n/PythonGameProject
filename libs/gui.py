@@ -7,6 +7,7 @@ from libs.spritesheet import get_path
 
 
 class Gui:
+
     def __init__(self, player, frame):
         self.player = player
         self.frame = frame
@@ -36,16 +37,16 @@ class Gui:
 
     def draw(self, canvas):
         # Gun Stuff
-        self.guiItems.append(canvas.draw_image(self.gun_img,
-                                               (self.source_centre.x, self.source_centre.y),
-                                               (self.source_size.x, self.source_size.y),
-                                               (self.pos.x, self.pos.y),
-                                               (self.dest_size.x, self.dest_size.y)))
+        #self.guiItems.append(canvas.draw_image(self.gun_img,
+        #                                       (self.source_centre.x, self.source_centre.y),
+        #                                       (self.source_size.x, self.source_size.y),
+        #                                       (self.pos.x, self.pos.y),
+        #                                       (self.dest_size.x, self.dest_size.y)))
 
-        canvas.draw_text((str(self.mags) + "/" + str(self.bullets)), (self.pos.x - 50, self.pos.y - 50), 24, 'White')
-        canvas.draw_text(("Kills: " + str(self.kills)), (10, 20), 24, 'White')
-        canvas.draw_text(("Health: " + str(self.player.health)), (self.frame.x - 120, 20), 24, 'White')
-        canvas.draw_text(("Lives: " + str(self.player.lives)), (self.frame.x - 120, 50), 24, 'White')
+        #canvas.draw_text((str(self.mags) + "/" + str(self.bullets)), (self.pos.x - 50, self.pos.y - 50), 24, 'White')
+        #canvas.draw_text(("Kills: " + str(self.kills)), (10, 20), 24, 'White')
+        #canvas.draw_text(("Health: " + str(self.player.health)), (self.frame.x - 120, 20), 24, 'White')
+        #canvas.draw_text(("Lives: " + str(self.player.lives)), (self.frame.x - 120, 50), 24, 'White')
         if self.damaged_effect:
             canvas.draw_image(self.blood,
                               (self.blood_source_centre.x, self.blood_source_centre.y),

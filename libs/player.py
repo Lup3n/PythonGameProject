@@ -1,12 +1,19 @@
 from libs.spritesheet import Spritesheet
 from libs.vector import Vector
-from libs.bullet import Bullet
 from libs.weapon import Weapon
-import math
 
 
 class Player:
-    def __init__(self, pos=Vector(0,0), gui=None):
+    """
+    Class representation of the Player.
+    It will be responsible for shooting bullets and animating.
+    """
+
+    def __init__(self, pos=Vector(0, 0), gui=None):
+        """
+        :param pos: Starting player position. *Default value is at (0,0)*
+        :param gui:
+        """
         # Core Mechanics
         self.pos = pos
         self.vel = Vector()
@@ -17,10 +24,10 @@ class Player:
         self.entities = []
         self.count = 0
         self.kills = 0
-        self.radius = 40  # test
+        # We add 20 so that the players hitbox is smaller so that it feel easier to play
         self.hitbox = (Vector(self.pos.x - 20, self.pos.y - 20),
                        Vector(self.pos.x + 20,
-                              self.pos.y + 20))  # We add 20 so that the players hitbox is smaller so that it feel easier to play
+                              self.pos.y + 20))
 
         # Sprite
         self.sheet = "sheets\\idle.png"
@@ -33,36 +40,42 @@ class Player:
         self.x = self.health / 100.0
         self.myColor = (2.0 * self.x, 2.0 * (1 - self.x), 0)
 
-    def animation(self, state):
-        if state == "idle":
-            self.sheet = "sheets\\idle.png"
-        elif state == "move":
-            self.sheet = "sheets\\move.png"
+    #def animation(self, state):
+
+    #    if state == "idle":
+    #        self.sheet = "sheets\\idle.png"
+    #    elif state == "move":
+    #        self.sheet = "sheets\\move.png"
 
     def draw(self, canvas):
+        """
+        Function draws player sprite
+        :param canvas: Canvas on which to draw the sprites.
+        """
         self.sprite.draw(canvas)
-        #self.draw_health_bar(canvas)
-        # [bullet.draw(canvas) for bullet in self.entities]
         # canvas.draw_polyline([(self.hitbox[0].x, self.hitbox[0].y), (self.hitbox[1].x, self.hitbox[0].y)], 12, 'Blue')
         # canvas.draw_polyline([(self.hitbox[1].x, self.hitbox[0].y), (self.hitbox[1].x, self.hitbox[1].y)], 12, 'Purple')
         # canvas.draw_polyline([(self.hitbox[1].x, self.hitbox[1].y), (self.hitbox[0].x, self.hitbox[1].y)], 12, 'Red')
         # canvas.draw_polyline([(self.hitbox[0].x, self.hitbox[1].y), (self.hitbox[0].x, self.hitbox[0].y)], 12, 'Green')
 
     def update(self, camera):
+        """
+        Update player's variables as the game progresses
+        :param camera: Camera instance to update the offset for each
+        """
         self.count += 1
 
-        # print("NUMBER OF BULLETS IN ENTITIES[] IS: " + str(len(self.entities)))
-
         self.sprite.dest_centre = self.pos
-        self.pos = Vector(1280 // 2, (720 // 2) - 150) # -150 is so that the player is centered on the yaxis with the status bar 
+        # -150 is so that the player is centered on the yaxis with the status bar
+        self.pos = Vector(1280 // 2, (720 // 2) - 150)
         self.vel.multiply(0.85)
-        # self.pos.add(self.vel)
-        camera.center_camera(self, self.vel)
+
+        # Update camera offset
+        camera.center_camera(self.vel)
 
         self.sprite.rot = round(self.rot, 3)
         self.weapon.bullet_spawn_pos = self.weapon.rotate_point(self.pos.x + 50, self.pos.y + 25, self.rot, self.pos.x,
                                                                 self.pos.y)
-        self.hitbox = (Vector(self.pos.x - 20, self.pos.y - 20), Vector(self.pos.x + 20,
-                                                                        self.pos.y + 20))  # We add 20 so that the players hitbox is smaller so that it feel easier to play
 
-    # Define helper function to draw the health bar
+        # We add 20 so that the players hitbox is smaller so that it feel easier to play
+        self.hitbox = (Vector(self.pos.x - 20, self.pos.y - 20), Vector(self.pos.x + 20, self.pos.y + 20))

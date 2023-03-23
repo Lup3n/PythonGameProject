@@ -6,7 +6,7 @@ _ = False
 example_map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, _, _, _, _, 1, _, _, _, 1, _, _, _, _, 2, 1],
-    [1, _, _, _, 1, 69, _, _, _, _, _, _, _, _, _, 1],
+    [1, _, _, _, 1,69, _, _, _, _, _, _, _, _, _, 1],
     [1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
     [1, _, _, _, 2, _, _, _, _, 1, _, _, _, _, _, 1],
     [1, _, _, _, _, _, _, _, 1, 1, 1, _, _, _, _, 1],
@@ -18,17 +18,17 @@ example_map = [
 corridor_level = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, _, _, _, _, 1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1, _, _, _, _, _, 1],
-    [1, 3, _, _, _, _, _, _, _, 1, _, _, _, _, _, 2, _, _, _, _, _, _, _, 1, _, _, 2, _, _, 1],
+    [1, 2, _, _, _, _, _, _, _, 1, _, _, _, _, _, 2, _, _, _, _, _, _, _, 1, _, _, 2, _, _, 1],
     [1, _, _, _, _, 1, _, _, _, _, _, _, _, _, _, _, _, _, 2, _, _, _, _, _, _, 2, 2, _, _, 1],
     [1, _, _, _, _, 1, _, _, _, _, _, _, _, _, _, _, 1, _, _, _, _, _, _, _, _, _, _, _, _, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 69, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,69, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
 test_map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, _, _, _, 2, 1, _, _, _, 1, _, _, _, _, _, 1],
     [1, _, _, _, 1,69, _, _, _, _, _, _, _, _, _, 1],
-    [1, _, _, _, _, _, _, _, _, _, _, 2, _, _, _, 1],
+    [1, _, _, 2, _, 2, _, 2, _, _, _, 2, _, _, _, 1],
     [1, _, _, _, _, _, _, _, _, 1, _, _, _, _, _, 1],
     [1, _, _, _, _, _, _, _, 1, 1, 1, _, _, _, _, 1],
     [1, _, 1, _, _, _, _, _, _, _, _, _, _, 1, _, 1],
@@ -39,13 +39,17 @@ test_map = [
 
 class Level:
     def __init__(self, player) -> None:
-        self.map = test_map
+        self.map = corridor_level
         self.world_map = {}
         self.list_walls: list[Wall, ...] = []
         self.temp_enemies = []
         self.get_map(player)
 
     def get_map(self, player):
+        """
+        Function that initialises dictionary that stores every wall location to be drawn on the screen.
+        :param player: player instance to set its position
+        """
 
         for j, row in enumerate(self.map):
             for i, value in enumerate(row):
@@ -60,41 +64,38 @@ class Level:
                 elif value == 2:
                     self.temp_enemies.append(Enemy(Vector((i * 95)-player.pos.x, ((j * 95)-player.pos.y)), player, "Hello"))
                 elif value == 3: # not functioning
-                    player.pos = Vector(((i)*95)-player.pos.x, (j*95)-player.pos.y)
+                    player.pos = Vector((i * 95) - player.pos.x, (j * 95) - player.pos.y)
 
         # print(self.world_map)
 
     def draw(self, canvas, player, camera, enemies: list[Enemy]):
-        # random data for reference
-        width = 50
-        height = 50
-        x0 = 600
-        y0 = 600
-        line_width = 5
+        """
+        Function to draw the level and the render the wall.
+        :param canvas: Canvas on which to draw the sprites.
+        :param player: Player instance to check the player's collision with the walls.
+        :param camera: Camera instance to offset walls.
+        :param enemies: List of enemies on the level to check their collision with the walls.
 
         """
-          A            B
-          --------------
-          |            |
-          |     .      |
-          |            |
-          -------------- 
-          D            C
-          . ->would be the center
+
+        """
+        For reference. ::
+        | A            B
+        | +------------+
+        | |            |
+        | |     .      |
+        | |            |
+        | +------------+
+        | D            C
+         
+         . ->would be the center
         
+        wall collision:
         canvas.draw_polygon(((x0-width, y0-width),  # A
                              (x0 + width, y0-width),  # B
                              (x0 + width, y0 + width),  # C
                              (x0-width, y0 + height)),  # D
                             line_width, "Pink", "Red")
-        """
-        """
-        for pos in self.world_map:
-            canvas.draw_polygon(((pos[0] * 100 - width, pos[1] * 100 - width),  # A
-                                 (pos[0] * 100 + width, pos[1] * 100 - width),  # B
-                                 (pos[0] * 100 + width, pos[1] * 100 + width),  # C
-                                 (pos[0] * 100 - width, pos[1] * 100 + height)),  # D
-                                line_width, "Pink", "Red")
         """
         if self.temp_enemies != 0:
             enemies.extend(self.temp_enemies)
