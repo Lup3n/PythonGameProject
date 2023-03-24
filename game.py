@@ -125,6 +125,7 @@ class Game:
                     if j.health <= 0:
                         self.enemies.remove(j)
                         self.player.kills += 1
+                        self.player.weapon.current_mag[0] += random.randint(0, 5)
                         break
                     self.player.entities.remove(bullet)
                     break
