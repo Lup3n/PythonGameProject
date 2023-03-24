@@ -22,13 +22,13 @@ class StatusBar:
         self.health_ratio = self.player.health / self.health_bar_length
         self.lives_bar_length = 90
         self.lives_ratio = self.player.lives / self.lives_bar_length
-        self.skull_img = simplegui.load_image(get_path("/skull.png"))
+        self.skull_img = simplegui.load_image(get_path("StatusBarSprites/skull.png"))
         self.skull_source_centre = Vector(self.skull_img.get_width() / 2, self.skull_img.get_height() / 2)
-        self.ammo = simplegui.load_image(get_path("/ammo.png"))
+        self.ammo = simplegui.load_image(get_path("StatusBarSprites/ammo.png"))
         self.ammo_source_centre = Vector(self.ammo.get_width() / 2, self.ammo.get_height() / 2)
-        self.zombie = simplegui.load_image(get_path("/zombie.png"))
+        self.zombie = simplegui.load_image(get_path("StatusBarSprites/zombie.png"))
         self.zombie_source_centre = Vector(self.zombie.get_width() / 2, self.zombie.get_height() / 2)
-        self.status = simplegui.load_image(get_path("/status.png"))
+        self.status = simplegui.load_image(get_path("StatusBarSprites/status.png"))
         self.status_source_centre = Vector(self.status.get_width() / 2, self.status.get_height() / 2)
         self.count = 0
 

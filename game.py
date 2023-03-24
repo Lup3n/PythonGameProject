@@ -10,6 +10,7 @@ from libs.statusbar import StatusBar
 from libs.level import Level
 from libs.spritesheet import get_path
 from libs.camera import Camera
+from libs.levelOptions import list_levels
 
 WIDTH = 1280
 HEIGHT = 720
@@ -22,6 +23,7 @@ class Game:
     """
     Class responsible for running main loop of the game.
     """
+
     def __init__(self):
 
         # Basic Prerequisites
@@ -33,7 +35,6 @@ class Game:
         self.keyboard = Keyboard()
         self.camera = Camera(self.player)
         self.enemies = []
-        self.level = Level(self.player)
 
         self.statusbar = StatusBar(self.player, Vector(WIDTH, HEIGHT), self.enemies)
         self.inter = Interaction(self.player, self.keyboard, Vector(WIDTH, HEIGHT))
@@ -42,6 +43,10 @@ class Game:
         self.player.gui = self.player_gui
 
         self.intro_pos = Vector(-640, HEIGHT // 2)
+
+        # storing levels
+        self.levels = list_levels
+        self.level = Level(self.player, list_levels[random.randint(0, len(list_levels)-1)])
 
     def start(self):
         """
@@ -87,7 +92,7 @@ class Game:
         for x in self.enemies:
             x.update(self.camera)
             x.draw(canvas)
-        #self.status_bar.draw(canvas)
+        self.status_bar.draw(canvas)
 
         if len(self.player.entities):
             pass
@@ -109,7 +114,6 @@ class Game:
                         break
                     self.player.entities.remove(bullet)
                     break
-
 
     def draw_background(self, canvas):
         """
