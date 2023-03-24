@@ -44,6 +44,12 @@ class Game:
         self.gui = self.player_gui
 
         self.intro_pos = Vector(-640, HEIGHT // 2)
+        self.frame = simplegui.create_frame("Game", WIDTH, HEIGHT, control_width=0)
+        self.frame.set_draw_handler(self.run)
+        self.frame.set_keydown_handler(self.keyboard.keyDown)
+        self.frame.set_keyup_handler(self.keyboard.keyUp)
+        self.frame.set_mouseclick_handler(self.mouse_handler)
+
 
         # storing levels
         self.levels = list_levels
@@ -67,6 +73,31 @@ class Game:
             self.draw(canvas)
         else:
             self.introduction(canvas)
+
+
+    def restart_game(self):
+        self.pos = None
+        self.running = False 
+        self.welcome_screen = True
+        self.player = Player(Vector(200, 200))
+        self.keyboard = Keyboard()
+        self.camera = Camera(self.player)
+        self.enemies = []
+        self.intro_pos = Vector(-640, HEIGHT // 2)
+        
+        self.statusbar = StatusBar(self.player, Vector(WIDTH, HEIGHT), self.enemies)
+        self.inter = Interaction(self.player, self.keyboard, Vector(WIDTH, HEIGHT))
+        self.status_bar = StatusBar(self.player, Vector(WIDTH, HEIGHT), self.enemies)
+        self.player_gui = Gui(self.player, Vector(WIDTH, HEIGHT))
+        self.player.gui = self.player_gui
+        self.gui = self.player_gui
+
+        self.levels = list_levels
+        self.level = Level(self.player, list_levels[random.randint(0, len(list_levels) - 1)], self)
+        self.frame.set_draw_handler(self.run)
+        self.frame.set_keydown_handler(self.keyboard.keyDown)
+        self.frame.set_keyup_handler(self.keyboard.keyUp)
+        self.frame.set_mouseclick_handler(self.mouse_handler)
 
     def spawn_enemy(self, pos):
 
@@ -94,6 +125,8 @@ class Game:
         self.inter.update()
         self.player.update(self.camera)
         self.enemy_handler()
+        if self.player.health <= 0:
+            self.restart_game()
 
     def draw(self, canvas):
         """
@@ -174,9 +207,5 @@ class Game:
 
 
 main = Game()
-frame = simplegui.create_frame("Game", WIDTH, HEIGHT, control_width=0)
-frame.set_draw_handler(main.run)
-frame.set_keydown_handler(main.keyboard.keyDown)
-frame.set_keyup_handler(main.keyboard.keyUp)
-frame.set_mouseclick_handler(main.mouse_handler)
-frame.start()
+
+main.frame.start()
