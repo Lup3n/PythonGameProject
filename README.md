@@ -31,3 +31,24 @@ For Windows:
     Open Command Prompt by pressing the Windows key + R, type cmd and press Enter.
     Navigate to the directory where you extracted the game by typing cd path\to\extracted\folder and press Enter.
     Type python game.py and press Enter to start the game.
+
+
+
+
+
+What each file does:
+    bullet.py - Responsible for being a bullet, so it a sprite which has a velocity.
+    camera.py - Responsible for offsetting all stationary sprite as well as moving ones according to the players movement.
+    clock.py - Responsible for counting.
+    enemy.py - Responsible for the zombies that are used in the game.
+    gui.py - Responsible for some gui aspects of the game.
+    interaction.py - Responsible performing movement and actions of a player.
+    keyboard.py  - Responsible for defining which keys are to be used and their action.
+    level.py - Responsible for loading the level onto the screen and drawing it.
+    levelOptions.py - Responsible for defining the layout of the maps using lists.
+    player.py - Responsible for keeping all stats and sprite of the player in the game.
+    spritesheet.py - Responsible for helping sprites have animations via spritesheets.
+    statusbar.py - Responsible for having the gui bar on the screen informing the player how many bullets,zombies, health is left.
+    vector.py - Responisble for all vector handling.
+    wall.py - Responsible for drawing and updating the wall sprites witin the game.
+    weapon.py - Responsible for firing bullets via the bullet class and the direction in which the bullet should be fired.
