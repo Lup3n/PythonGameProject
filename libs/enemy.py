@@ -8,14 +8,13 @@ from libs.camera import Camera
 from libs.player import Player
 
 
-
 class Enemy:
     def __init__(self, pos, player: Player, gui):
         """
 
-        :param pos:
-        :param player:
-        :param gui:
+        :param pos: starting position of the Enemy
+        :param player: Player instance to follow
+        :param gui: GUI where it will handle blood drawing and damage input
         """
         self.pos = pos
         self.health = 100
@@ -29,7 +28,8 @@ class Enemy:
         self.counter = 0
         self.sheet = "sheets\\zombie.png"
         self.sprite = Spritesheet(self.sheet, self.pos, 17, 1, 4, self.rot)
-        self.temp_animation = Spritesheet("newSprites\\sequence2.png", self.pos, 12, 1, 10, self.rot, (50, 50)) # new seques
+        self.temp_animation = Spritesheet("newSprites\\sequence2.png", self.pos, 12, 1, 10, self.rot,
+                                          (50, 50))  # new seques
         self.bleeding = False
         self.alive = True
 
@@ -52,18 +52,8 @@ class Enemy:
                               (self.blood_source_size.x, self.blood_source_size.y),
                               self.pos.get_p(),  # (self.blood_pos.x, self.blood_pos.y),
                               (100, 100))
-        # self.temp_animation.draw(canvas)
+
         self.sprite.draw(canvas)
-        #canvas.draw_image(self.temp_sprite, (self.temp_sprite.get_width()/2, self.temp_sprite.get_height()/2),
-        #                  (self.temp_sprite.get_width(), self.temp_sprite.get_height()),
-        #                 self.pos.get_p(),
-        #                  (50,50),
-        #                  self.rot)
-        # Draws hit box
-        # canvas.draw_polyline([(self.hitbox[0].x, self.hitbox[0].y), (self.hitbox[1].x, self.hitbox[0].y)], 12, 'Blue')
-        # canvas.draw_polyline([(self.hitbox[1].x, self.hitbox[0].y), (self.hitbox[1].x, self.hitbox[1].y)], 12, 'Purple')
-        # canvas.draw_polyline([(self.hitbox[1].x, self.hitbox[1].y), (self.hitbox[0].x, self.hitbox[1].y)], 12, 'Red')
-        # canvas.draw_polyline([(self.hitbox[0].x, self.hitbox[1].y), (self.hitbox[0].x, self.hitbox[0].y)], 12, 'Green')
 
     def lookat(self):
         """
@@ -84,7 +74,6 @@ class Enemy:
         """
         self.timer.time = 0
         self.bleeding = True
-
 
     def update(self, camera: Camera):
         """
@@ -116,7 +105,7 @@ class Enemy:
         self.sprite.dest_centre = self.pos
         self.vel.multiply(0.50)
         self.sprite.rot = round(self.rot, 3)
-        #self.temp_animation.rot = round(self.rot, 3)
+        # self.temp_animation.rot = round(self.rot, 3)
         if self.timer.transition(200):
             if self.bleeding:
                 self.bleeding = False
@@ -125,8 +114,20 @@ class Enemy:
         if not self.alive:
             del self
 
-    def got_shot(self, bullet):
+    def got_shot(self, bullet) -> bool:
+        """
+        Checks whether a bullet has hit this instance of zombie or not
+        :param bullet: instance of bullet to check collision with
+        :return: True if the bullet successfully hit the enemy, else False
+        """
         return self.hitbox[0].x <= bullet.hitbox[0].x <= self.hitbox[1].x and \
-                            self.hitbox[0].y <= bullet.hitbox[0].y <= self.hitbox[1].y or \
-                            self.hitbox[0].x <= bullet.hitbox[1].x <= self.hitbox[1].x and \
-                            self.hitbox[0].y <= bullet.hitbox[1].y <= self.hitbox[1].y
+            self.hitbox[0].y <= bullet.hitbox[0].y <= self.hitbox[1].y or \
+            self.hitbox[0].x <= bullet.hitbox[1].x <= self.hitbox[1].x and \
+            self.hitbox[0].y <= bullet.hitbox[1].y <= self.hitbox[1].y
+
+    def debug(self, canvas):
+        # Draws hit box
+        canvas.draw_polyline([(self.hitbox[0].x, self.hitbox[0].y), (self.hitbox[1].x, self.hitbox[0].y)], 12, 'Blue')
+        canvas.draw_polyline([(self.hitbox[1].x, self.hitbox[0].y), (self.hitbox[1].x, self.hitbox[1].y)], 12, 'Purple')
+        canvas.draw_polyline([(self.hitbox[1].x, self.hitbox[1].y), (self.hitbox[0].x, self.hitbox[1].y)], 12, 'Red')
+        canvas.draw_polyline([(self.hitbox[0].x, self.hitbox[1].y), (self.hitbox[0].x, self.hitbox[0].y)], 12, 'Green')
