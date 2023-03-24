@@ -1,8 +1,7 @@
-from libs.spritesheet import Spritesheet, get_path
+from libs.spritesheet import get_path
 from libs.vector import Vector
 import math
 import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
-from Settings import PATH
 
 WIDTH: int = 1280
 HEIGHT: int = 720
