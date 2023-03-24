@@ -29,8 +29,7 @@ class Game:
         # Basic Prerequisites
         self.pos = None
         self.running = False  # Can be used in the future to pause the game if needed
-        # Determine whether the introduction should be shown
-        self.welcome_screen = True
+        self.welcome_screen = True # Determine whether the introduction should be shown
         self.player = Player(Vector(200, 200))
         self.keyboard = Keyboard()
         self.camera = Camera(self.player)
@@ -94,16 +93,13 @@ class Game:
         self.gui = self.player_gui
 
         self.levels = list_levels
-        self.level = Level(self.player, list_levels[random.randint(0, len(list_levels) - 1)])
+        self.level = Level(self.player, list_levels[random.randint(0, len(list_levels) - 1)], self)
         self.frame.set_draw_handler(self.run)
         self.frame.set_keydown_handler(self.keyboard.keyDown)
         self.frame.set_keyup_handler(self.keyboard.keyUp)
         self.frame.set_mouseclick_handler(self.mouse_handler)
 
     def spawn_enemy(self, pos):
-
-        # rand_pos = Vector(random.randint(100, WIDTH - 100), random.randint(100, HEIGHT - 100))
-        # rand_pos = Vector(random.randint(100, WIDTH - 100), random.randint(100, HEIGHT - 100))
         self.enemies.append(Enemy(pos, self.player, self.gui))
 
     def enemy_handler(self):
@@ -111,13 +107,13 @@ class Game:
             self.extra_enemies += 2
             if self.player.kills > 2:
                 for j in range(len(self.level.enemies_spawn_pos)):
-                    self.spawn_enemy(Vector(self.level.enemies_spawn_pos[j][0] - self.camera.x,
-                                            self.level.enemies_spawn_pos[j][1] - self.camera.y))
+                    self.spawn_enemy(Vector(self.level.enemies_spawn_pos[j][0] - self.camera.x+random.randint(-20,20),
+                                            self.level.enemies_spawn_pos[j][1] - self.camera.y+random.randint(-20,20)))
 
                 for z in range(self.extra_enemies):
                     random_pos = random.randint(0, len(self.level.enemies_spawn_pos)-1)
-                    self.spawn_enemy(Vector(self.level.enemies_spawn_pos[random_pos][0] - self.camera.x,
-                                            self.level.enemies_spawn_pos[random_pos][1] - self.camera.y))
+                    self.spawn_enemy(Vector(self.level.enemies_spawn_pos[random_pos][0] - self.camera.x + random.randint(-20,20),
+                                            self.level.enemies_spawn_pos[random_pos][1] - self.camera.y+random.randint(-20,20)))
 
             else:
                 for k in range(len(self.level.enemies_spawn_pos)):
