@@ -15,6 +15,14 @@ Health: Healthbar
 
 ### How To Run
 
+For Uni Professor:
+
+    Download the provided code into the same strucutre as uploaded 
+    Then nagivate into the directory with the game.
+    Run the game.py file with python.
+
+
+
 For Linux:
 
     Open your terminal and navigate to the directory where you want to download the game.
