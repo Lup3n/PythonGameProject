@@ -11,12 +11,3 @@ class Camera:
     def center_camera(self, vel):
         self.x += vel.x
         self.y += vel.y
-
-    """
-        def center_camera(self,player, vel):
-        self.pos = Vector(1280 // 2, 720 // 2)
-        if player.pos != self.pos:
-            vect: Vector = player.pos - self.pos
-            self.x += vect.x
-            self.y += vect.y
-    """
