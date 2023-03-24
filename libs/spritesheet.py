@@ -21,7 +21,7 @@ class Spritesheet:
     Class that handles the animations of object such as: Player and Enemy.
     Mostly modifiable, it allows editing the frame rate, rotation, and position of the animation occuring.
     """
-    def __init__(self, image: str, pos: Vector, columns: int, rows: int, frame_duration: int, rot: int = 0, size:
+    def __init__(self, image: str, pos: Vector, columns: int, rows: int, frame_duration: int, rot: int | float = 0, size:
     tuple[int, int] = (100, 100)) -> None:
         """
         Constructor to initialise the sprite-sheet for an animation

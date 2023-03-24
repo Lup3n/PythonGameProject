@@ -6,4 +6,4 @@ class Clock:
         self.time += 1
 
     def transition(self, duration):
-        return (self.time % duration == 0)
+        return self.time % duration == 0

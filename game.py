@@ -68,8 +68,8 @@ class Game:
             self.introduction(canvas)
 
     def spawn_enemy(self):
-        self.enemies.append(Enemy(random.randint(100, WIDTH - 100), random.randint(100, HEIGHT - 100)), self.player,
-                            self.gui)
+        rand_pos = Vector(random.randint(100, WIDTH - 100), random.randint(100, HEIGHT - 100))
+        self.enemies.append(Enemy(rand_pos, self.player, self.gui))
 
     def value_update(self):
         self.enemies_count = len(self.enemies)
@@ -120,7 +120,7 @@ class Game:
         Function that draws the background of the level
         :param canvas: Canvas on which to draw the sprites
         """
-        new_pavement = simplegui.load_image(get_path("newSprites\\Pavement_tiles.png"))
+        new_pavement = simplegui.load_image(get_path("levelSprites/Pavement_tiles.png"))
         ws = len(self.level.map[0])
         hs = len(self.level.map)
 
