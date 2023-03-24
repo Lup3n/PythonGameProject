@@ -47,7 +47,7 @@ class Game:
 
         # storing levels
         self.levels = list_levels
-        self.level = Level(self.player, list_levels[random.randint(0, len(list_levels) - 1)])
+        self.level = Level(self.player, list_levels[random.randint(0, len(list_levels) - 1)], self)
 
     def start(self):
         """
@@ -68,9 +68,21 @@ class Game:
         else:
             self.introduction(canvas)
 
-    def spawn_enemy(self):
-        rand_pos = Vector(random.randint(100, WIDTH - 100), random.randint(100, HEIGHT - 100))
-        self.enemies.append(Enemy(rand_pos, self.player, self.gui))
+    def spawn_enemy(self, pos):
+
+        #rand_pos = Vector(random.randint(100, WIDTH - 100), random.randint(100, HEIGHT - 100))
+        #rand_pos = Vector(random.randint(100, WIDTH - 100), random.randint(100, HEIGHT - 100))
+        self.enemies.append(Enemy(pos, self.player, self.gui))
+
+    def enemy_handler(self):
+        if len(self.enemies) == 0:
+            if self.player.kills > 2:
+                for j in range(len(self.level.enemies_spawn_pos)):
+                    print("Spawning")
+                    self.spawn_enemy(Vector(self.level.enemies_spawn_pos[j][0] - self.camera.x, self.level.enemies_spawn_pos[j][1] - self.camera.y))
+            else:
+                for k in range(len(self.level.enemies_spawn_pos)):
+                    self.spawn_enemy(Vector(self.level.enemies_spawn_pos[k][0] - self.camera.x, self.level.enemies_spawn_pos[k][1]- self.camera.y))
 
     def value_update(self):
         self.enemies_count = len(self.enemies)
@@ -81,9 +93,7 @@ class Game:
         """
         self.inter.update()
         self.player.update(self.camera)
-
-        if len(self.enemies) < 4:
-            self.spawn_enemy()
+        self.enemy_handler()
 
     def draw(self, canvas):
         """

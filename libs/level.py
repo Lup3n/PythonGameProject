@@ -4,11 +4,12 @@ from libs.vector import Vector
 
 
 class Level:
-    def __init__(self, player, map_arr) -> None:
+    def __init__(self, player, map_arr, game) -> None:
         self.map = map_arr
+        self.game = game
         self.world_map = {}
         self.list_walls: list[Wall, ...] = []
-        self.temp_enemies = []
+        self.enemies_spawn_pos = []
         self.get_map(player)
 
     def get_map(self, player):
@@ -28,12 +29,13 @@ class Level:
                     w = Wall((i * 95, j * 95), 4, 1)
                     self.list_walls.append(w)
                 elif value == 2:
-                    self.temp_enemies.append(
-                        Enemy(Vector((i * 95) - player.pos.x, ((j * 95) - player.pos.y)), player, "gui"))
+                    self.enemies_spawn_pos.append([i * 95, j * 95])
                 elif value == 3:  # not functioning
                     player.pos = Vector((i * 95) - player.pos.x, (j * 95) - player.pos.y)
 
         # print(self.world_map)
+
+
 
     def draw(self, canvas, player, camera, enemies: list[Enemy]):
         """
@@ -64,9 +66,9 @@ class Level:
                              (x0-width, y0 + height)),  # D
                             line_width, "Pink", "Red")
         """
-        if self.temp_enemies != 0:
-            enemies.extend(self.temp_enemies)
-            self.temp_enemies = []
+        #if self.temp_enemies != 0:
+        #    enemies.extend(self.temp_enemies)
+        #    self.temp_enemies = []
         for wall in self.list_walls:
             wall.draw(canvas, camera)
             wall.check_collision(player)
