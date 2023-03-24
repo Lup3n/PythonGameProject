@@ -91,6 +91,7 @@ class Game:
         self.player_gui = Gui(self.player, Vector(WIDTH, HEIGHT))
         self.player.gui = self.player_gui
         self.gui = self.player_gui
+        self.player.vel += Vector(0.1, 0.1)
 
         self.levels = list_levels
         self.level = Level(self.player, list_levels[random.randint(0, len(list_levels) - 1)], self)
@@ -98,6 +99,7 @@ class Game:
         self.frame.set_keydown_handler(self.keyboard.keyDown)
         self.frame.set_keyup_handler(self.keyboard.keyUp)
         self.frame.set_mouseclick_handler(self.mouse_handler)
+
 
     def spawn_enemy(self, pos):
         self.enemies.append(Enemy(pos, self.player, self.gui))

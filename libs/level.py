@@ -9,7 +9,7 @@ from libs.vector import Vector
 class WallOptions(Enum):
     NORMAL = "levelSprites/wall.png"
     COLOSSUS = "levelSprites/ColossusWanted.jpg"
-    ADRIAN = "levelSprites/WallAdrian.jpg"
+    ADRIAN = "levelSprites/wallAdrian.jpg"
     COMPSOC = "levelSprites/wallCompSoc.jpg"
 
 
