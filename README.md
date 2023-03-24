@@ -13,6 +13,10 @@ Scoring system: Zombie kills
 Health: Healthbar
 
 
+
+When a zombies is kill you have a change to receive between 0 and 5 bullets.
+When you are killed the game will restart.
+
 ### How To Run
 
 For Uni Professor:
