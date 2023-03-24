@@ -53,6 +53,8 @@ class Game:
         # storing levels
         self.levels = list_levels
         self.level = Level(self.player, list_levels[random.randint(0, len(list_levels) - 1)], self)
+        self.extra_enemies = len(self.level.enemies_spawn_pos)
+
 
     def start(self):
         """
@@ -82,6 +84,7 @@ class Game:
         self.camera = Camera(self.player)
         self.enemies = []
         self.intro_pos = Vector(-640, HEIGHT // 2)
+        self.extra_enemies = len(self.level.enemies_spawn_pos)
 
         self.statusbar = StatusBar(self.player, Vector(WIDTH, HEIGHT), self.enemies)
         self.inter = Interaction(self.player, self.keyboard, Vector(WIDTH, HEIGHT))
@@ -105,11 +108,17 @@ class Game:
 
     def enemy_handler(self):
         if len(self.enemies) == 0:
+            self.extra_enemies += 2
             if self.player.kills > 2:
                 for j in range(len(self.level.enemies_spawn_pos)):
-                    print("Spawning")
                     self.spawn_enemy(Vector(self.level.enemies_spawn_pos[j][0] - self.camera.x,
                                             self.level.enemies_spawn_pos[j][1] - self.camera.y))
+
+                for z in range(self.extra_enemies):
+                    random_pos = random.randint(0, len(self.level.enemies_spawn_pos)-1)
+                    self.spawn_enemy(Vector(self.level.enemies_spawn_pos[random_pos][0] - self.camera.x,
+                                            self.level.enemies_spawn_pos[random_pos][1] - self.camera.y))
+
             else:
                 for k in range(len(self.level.enemies_spawn_pos)):
                     self.spawn_enemy(Vector(self.level.enemies_spawn_pos[k][0] - self.camera.x,
