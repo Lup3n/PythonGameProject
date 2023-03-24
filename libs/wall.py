@@ -4,7 +4,7 @@ from libs.spritesheet import get_path
 
 
 class Wall:
-    def __init__(self, pos: tuple[int, int], border: int, i=0) -> None:
+    def __init__(self, pos: tuple[int, int], border: int, wall_type: str) -> None:
         """
         Constructor to initalize a wall
         :param pos: position of the wall on the map
@@ -15,10 +15,7 @@ class Wall:
         self.pos = Vector(pos[0], pos[1])
         self.length = 50
         self.safe_offset = 10
-        if i == 1:
-            self.img = simplegui.load_image(get_path("levelSprites/wallAdrian.jpg"))
-        else:
-            self.img = simplegui.load_image(get_path("levelSprites/wall.png"))
+        self.img = simplegui.load_image(get_path(wall_type))
         self.hitbox = (
             Vector(self.pos.x - self.length - self.safe_offset, self.pos.y - self.length - self.safe_offset),
             Vector(self.pos.x + self.length, self.pos.y + self.length + self.safe_offset))

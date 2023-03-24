@@ -57,7 +57,7 @@ class Bullet:
                 j.health -= self.damage
                 j.bleed()
 
-    # TODO:still working on collision with wall
+
     def wall_collision(self, wall) -> bool:
         # print("it hit a wall omg no way ")
         return wall.check_collision(self)
