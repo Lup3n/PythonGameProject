@@ -4,13 +4,18 @@ from libs.spritesheet import get_path
 
 
 class Wall:
-    def __init__(self, pos: tuple[int, int], border: int, color: str, i=0) -> None:
+    def __init__(self, pos: tuple[int, int], border: int, i=0) -> None:
+        """
+        Constructor to initalize a wall
+        :param pos: position of the wall on the map
+        :param border: thickness of teh border
+        :param i:
+        """
         self.border = border
-        self.color = color
         self.pos = Vector(pos[0], pos[1])
         self.length = 50
         self.safe_offset = 10
-        if i:
+        if i == 1:
             self.img = simplegui.load_image(get_path("levelSprites/wallAdrian.jpg"))
         else:
             self.img = simplegui.load_image(get_path("levelSprites/wall.png"))

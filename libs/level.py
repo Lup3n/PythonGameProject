@@ -21,15 +21,16 @@ class Level:
             for i, value in enumerate(row):
                 if value == 1:
                     self.world_map[(i, j)] = value
-                    w = Wall((i * 95, j * 95), 4, "pink")
+                    w = Wall((i * 95, j * 95), 4)
                     self.list_walls.append(w)
                 elif value == 69:
                     self.world_map[(i, j)] = value
-                    w = Wall((i * 95, j * 95), 4, "pink", 1)
+                    w = Wall((i * 95, j * 95), 4, 1)
                     self.list_walls.append(w)
                 elif value == 2:
-                    self.temp_enemies.append(Enemy(Vector((i * 95)-player.pos.x, ((j * 95)-player.pos.y)), player, "Hello"))
-                elif value == 3: # not functioning
+                    self.temp_enemies.append(
+                        Enemy(Vector((i * 95) - player.pos.x, ((j * 95) - player.pos.y)), player, "gui"))
+                elif value == 3:  # not functioning
                     player.pos = Vector((i * 95) - player.pos.x, (j * 95) - player.pos.y)
 
         # print(self.world_map)

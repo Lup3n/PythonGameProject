@@ -138,7 +138,7 @@ class Game:
         Function that displays/animates the introduction to the game.
         :param canvas: Canvas on which to draw the sprites.
         """
-        intro = simplegui.load_image(get_path("newSprites\\IntroductionPage.png"))
+        intro = simplegui.load_image(get_path("IntroductionPage.png"))
         if self.intro_pos.x + intro.get_width() / 2 < WIDTH:
             inc = Vector(16, 0)
             self.intro_pos.add(inc)
