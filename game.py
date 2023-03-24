@@ -41,12 +41,13 @@ class Game:
         self.status_bar = StatusBar(self.player, Vector(WIDTH, HEIGHT), self.enemies)
         self.player_gui = Gui(self.player, Vector(WIDTH, HEIGHT))
         self.player.gui = self.player_gui
+        self.gui = self.player_gui
 
         self.intro_pos = Vector(-640, HEIGHT // 2)
 
         # storing levels
         self.levels = list_levels
-        self.level = Level(self.player, list_levels[random.randint(0, len(list_levels)-1)])
+        self.level = Level(self.player, list_levels[random.randint(0, len(list_levels) - 1)])
 
     def start(self):
         """
@@ -80,6 +81,9 @@ class Game:
         """
         self.inter.update()
         self.player.update(self.camera)
+
+        if len(self.enemies) < 4:
+            self.spawn_enemy()
 
     def draw(self, canvas):
         """
