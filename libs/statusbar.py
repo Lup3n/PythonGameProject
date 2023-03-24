@@ -49,8 +49,6 @@ class StatusBar:
 
         self.health_bar(canvas)
 
-        self.show_lives(canvas)
-
     def health_bar(self, canvas):
         heath_perc = self.player.health / 100.0
         ratio = (int(255 * (1 - heath_perc)), int(255 * heath_perc), 0)
@@ -103,23 +101,3 @@ class StatusBar:
         canvas.draw_text(":" + (str(self.player.weapon.current_mag[0])) + "/" + str(self.player.weapon.bullets_left),
                          (self.frame.x - 200, self.frame.y - 50),
                          60, 'Red')
-
-    def show_lives(self, canvas):
-        transition_width = 0
-        transition_color = "Red"
-
-        lives_bar_width = int(self.player.lives / self.lives_ratio)
-        lives_bar = [(590, 620), (590 + lives_bar_width, 620), (590 + lives_bar_width, 620 + 25), (590, 620 + 25)]
-        max_lives_bar = [(590, 620), (590 + self.lives_bar_length, 620), (590 + self.lives_bar_length, 620 + 25),
-                         (590, 620 + 25)]
-        transition_bar = [(590 + lives_bar_width, 620), (590 + lives_bar_width + transition_width, 620),
-                          (590 + lives_bar_width + transition_width, 620 + 25), (590 + lives_bar_width, 620 + 25)]
-
-        canvas.draw_polygon(max_lives_bar, 0, "Grey", "Grey")
-        canvas.draw_polygon(lives_bar, 0, "Red", "Red")
-        canvas.draw_polygon(transition_bar, 0, transition_color, transition_color)
-        canvas.draw_polygon([(590, 620), (590 + self.lives_bar_length, 620),
-                             (590 + self.lives_bar_length, 620 + 25), (590, 620 + 25)], 3, "White")
-
-        canvas.draw_line((590 + 30, 620), (590 + 30, 620 + 25), 3, 'White')
-        canvas.draw_line((590 + 60, 620), (590 + 60, 620 + 25), 3, 'White')
